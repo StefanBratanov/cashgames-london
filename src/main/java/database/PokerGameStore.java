@@ -22,8 +22,9 @@ public class PokerGameStore {
         session.flush();
         session.saveOrUpdate(pokerGame);
         session.saveOrUpdate(detail);
-        session.getTransaction().commit();
         session.flush();
+        session.getTransaction().commit();
+
         session.evict(pokerGame);
         session.evict(detail);
 
