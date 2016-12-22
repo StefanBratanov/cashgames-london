@@ -92,7 +92,7 @@ public class TestStatus implements Status {
 
             @Override
             public String getScreenName() {
-                return "TestScreenName";
+                return "ThePokerRoomUK";
             }
 
             @Override

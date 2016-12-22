@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.stream.Stream;
 
 public enum PokerVenue implements Serializable {
 
@@ -33,5 +34,12 @@ public enum PokerVenue implements Serializable {
             }
         }
         throw new IllegalStateException("Could not retrieve poker venue from: " + twitterName);
+    }
+
+    public static boolean isExistingTwitterName(String twitterName) {
+        return Stream.of(PokerVenue.values())
+                .map(PokerVenue::getTwitterName)
+                .filter(name -> name.equals(twitterName))
+                .findAny().isPresent();
     }
 }

@@ -3,7 +3,9 @@ package model;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class PokerVenueTest {
 
@@ -27,5 +29,15 @@ public class PokerVenueTest {
     public void throwsExceptionIfNotFound() {
 
         PokerVenue.fromTwitterName("crap");
+    }
+
+    @Test
+    public void checksIfItIsExistingTwitterName() {
+        boolean first = PokerVenue.isExistingTwitterName("ThePokerRoomUK");
+        boolean second = PokerVenue.isExistingTwitterName("crap");
+
+        assertTrue(first);
+        assertFalse(second);
+
     }
 }
