@@ -181,8 +181,9 @@ public class PokerGameDetailsExtractorTest {
         assertThat(actualDetails).contains(expectedDetail1, expectedDetail2);
         assertThat(actualDetails).hasSize(2);
 
-
     }
+
+
 
     @Test
     public void testNotMatchingStatusTextReturnsEmptyList() {
