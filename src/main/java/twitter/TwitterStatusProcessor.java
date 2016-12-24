@@ -35,12 +35,16 @@ class TwitterStatusProcessor implements StatusProcessor {
             return;
         }
 
+        String twitterUrl = "https://twitter.com/" + status.getUser().getScreenName()
+                + "/status/" + status.getId();
+
         String statusText = status.getText();
         LocalDateTime updatedAt = LocalDateTime.ofInstant(status.getCreatedAt().toInstant(), ZoneId.of("UTC"));
 
         log.info(format("New status received [%s] from [%s] at [%s]", statusText, screenName, updatedAt.toString()));
 
-        List<PokerGameDetail> details = pokerGameDetailsExtractor.extract(screenName, statusText, updatedAt);
+        List<PokerGameDetail> details = pokerGameDetailsExtractor.extract(screenName,
+                statusText, updatedAt, twitterUrl);
 
         if (details.isEmpty()) {
             log.info("The statusText does not have cash game information");

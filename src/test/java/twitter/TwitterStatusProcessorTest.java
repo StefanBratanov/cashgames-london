@@ -42,16 +42,18 @@ public class TwitterStatusProcessorTest {
 
         String testScreenName = "ThePokerRoomUK";
         String statusText = "statusText";
+        String twitterUrl = "https://twitter.com/ThePokerRoomUK/status/123";
+
         LocalDateTime updatedAt = LocalDateTime.of(2007, 07, 28, 12, 00, 33, 220000000);
 
-        List<PokerGameDetail> details = Arrays.asList(new PokerGameDetail(null,2,null),
-                new PokerGameDetail(null,3,null));
+        List<PokerGameDetail> details = Arrays.asList(new PokerGameDetail(null, 2, null, twitterUrl),
+                new PokerGameDetail(null, 3, null, twitterUrl));
 
-        when(pokerGameDetailsExtractor.extract(testScreenName, statusText, updatedAt)).thenReturn(details);
+        when(pokerGameDetailsExtractor.extract(testScreenName, statusText, updatedAt,twitterUrl)).thenReturn(details);
 
         underTest.process(status);
 
-        verify(pokerGameDetailsExtractor, times(1)).extract(testScreenName, statusText, updatedAt);
+        verify(pokerGameDetailsExtractor, times(1)).extract(testScreenName, statusText, updatedAt, twitterUrl);
         verify(pokerGameStore, times(1)).persistPokerGameDetail(details.get(0));
         verify(pokerGameStore, times(1)).persistPokerGameDetail(details.get(1));
 

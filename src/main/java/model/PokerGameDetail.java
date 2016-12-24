@@ -15,14 +15,15 @@ public class PokerGameDetail implements Serializable {
     public PokerGameDetail() {
     }
 
-    public PokerGameDetail(PokerGame pokerGame, Integer numberOfTables, LocalDateTime updatedAt) {
+    public PokerGameDetail(PokerGame pokerGame, Integer numberOfTables, LocalDateTime updatedAt, String twitterUrl) {
         this.pokerGame = pokerGame;
         this.numberOfTables = numberOfTables;
         this.updatedAt = updatedAt;
+        this.twitterUrl = twitterUrl;
     }
 
     @Id
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private PokerGame pokerGame;
 
     @Column(name = "NumberOfTables")
@@ -30,6 +31,9 @@ public class PokerGameDetail implements Serializable {
 
     @Column(name = "UpdatedAt")
     private LocalDateTime updatedAt;
+
+    @Column(name = "twitterUrl")
+    private String twitterUrl;
 
     public PokerGame getPokerGame() {
         return pokerGame;

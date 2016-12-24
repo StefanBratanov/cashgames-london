@@ -14,7 +14,7 @@ public class TestStatus implements Status {
 
     @Override
     public long getId() {
-        return 0;
+        return 123;
     }
 
     @Override

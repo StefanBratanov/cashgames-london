@@ -10,7 +10,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class PokerGameStoreTest {
 
@@ -36,11 +35,12 @@ public class PokerGameStoreTest {
     @Ignore
     public void persistsPokerGameDetailTwiceWithSamePokerGame() {
         LocalDateTime updatedAt = LocalDateTime.of(2016, 07, 28, 12, 23, 5);
+        String twitterUrl = "http://www.test.com";
 
         PokerGame pokerGame = new PokerGame(PokerVenue.Empire, "NLH", "1/2");
 
-        PokerGameDetail detail1 = new PokerGameDetail(pokerGame, 4, updatedAt);
-        PokerGameDetail detail2 = new PokerGameDetail(pokerGame, 5, updatedAt);
+        PokerGameDetail detail1 = new PokerGameDetail(pokerGame, 4, updatedAt, twitterUrl);
+        PokerGameDetail detail2 = new PokerGameDetail(pokerGame, 5, updatedAt, twitterUrl);
 
         pokerGameStore.persistPokerGameDetail(detail1);
         pokerGameStore.persistPokerGameDetail(detail2);

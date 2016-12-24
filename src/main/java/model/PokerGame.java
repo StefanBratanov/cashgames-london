@@ -34,7 +34,7 @@ public class PokerGame implements Serializable {
     @Column(name = "Stakes")
     private String limit;
 
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "pokerGame", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "pokerGame", cascade = CascadeType.ALL)
     private PokerGameDetail pokerGameDetail;
 
 }

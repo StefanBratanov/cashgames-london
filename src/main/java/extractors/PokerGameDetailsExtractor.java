@@ -31,7 +31,7 @@ public class PokerGameDetailsExtractor {
     private static final Pattern PATTERN_4 = Pattern.compile("(?<info>(\\d+,\\d+/\\d+))(.*[game|games|running].*)", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_5 = Pattern.compile("(?<!NLH|PLO|\\))(?<info>(\\d+(-|/)\\d+\\(\\d+\\))+)", Pattern.CASE_INSENSITIVE);
 
-    public List<PokerGameDetail> extract(String username, String statusText, LocalDateTime updatedAt) {
+    public List<PokerGameDetail> extract(String username, String statusText, LocalDateTime updatedAt, String twitterUrl) {
 
         //very dodgy replacing
         String strippedStatusText = statusText
@@ -41,7 +41,7 @@ public class PokerGameDetailsExtractor {
         List<PokerGameDetail> details = new ArrayList<>();
 
         Optional<Matcher> optionalMatcher = Arrays.asList(PATTERN_1, PATTERN_2,
-                PATTERN_3, PATTERN_4,PATTERN_5)
+                PATTERN_3, PATTERN_4, PATTERN_5)
                 .stream()
                 .filter(pattern -> pattern.asPredicate().test(strippedStatusText))
                 .map(pattern -> pattern.matcher(strippedStatusText))
@@ -68,7 +68,8 @@ public class PokerGameDetailsExtractor {
                                     new PokerGameDetail(
                                             new PokerGame(pokerVenue, finalGame.toUpperCase(), limitAndTables.getKey()),
                                             limitAndTables.getValue(),
-                                            updatedAt);
+                                            updatedAt,
+                                            twitterUrl);
 
                             details.add(detail);
                         });
