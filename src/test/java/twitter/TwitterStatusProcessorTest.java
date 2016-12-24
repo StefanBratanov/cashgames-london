@@ -44,8 +44,8 @@ public class TwitterStatusProcessorTest {
         String statusText = "statusText";
         LocalDateTime updatedAt = LocalDateTime.of(2007, 07, 28, 12, 00, 33, 220000000);
 
-        List<PokerGameDetail> details = Arrays.asList(PokerGameDetail.builder().numberOfTables(2).build(),
-                PokerGameDetail.builder().numberOfTables(3).build());
+        List<PokerGameDetail> details = Arrays.asList(new PokerGameDetail(null,2,null),
+                new PokerGameDetail(null,3,null));
 
         when(pokerGameDetailsExtractor.extract(testScreenName, statusText, updatedAt)).thenReturn(details);
 

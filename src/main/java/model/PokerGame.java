@@ -1,30 +1,40 @@
 package model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Builder
-@Data
+@ToString
+@EqualsAndHashCode
 @Entity
 @IdClass(PokerGameId.class)
 public class PokerGame implements Serializable {
 
+    public PokerGame() {
+    }
+
+    public PokerGame(PokerVenue venue, String game, String limit) {
+        this.venue = venue;
+        this.game = game;
+        this.limit = limit;
+        this.pokerGameDetail = null;
+    }
 
     @Id
     @Enumerated(EnumType.STRING)
-    private final PokerVenue venue;
+    private PokerVenue venue;
 
     @Id
     @Column(name = "Game")
-    private final String game;
+    private String game;
 
     @Id
     @Column(name = "Stakes")
-    private final String limit;
+    private String limit;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "pokerGame", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "pokerGame", cascade = CascadeType.ALL)
     private PokerGameDetail pokerGameDetail;
+
 }

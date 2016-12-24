@@ -41,17 +41,9 @@ public class PokerGameDetailsExtractorTest {
 
         String testUserName = "ThePokerRoomUK";
 
-        PokerGameDetail expectedDetail1 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Vic).game("NLH")
-                        .limit("1/1").build()).numberOfTables(3).updatedAt(updatedAt).build();
-
-        PokerGameDetail expectedDetail2 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Vic).game("NLH")
-                        .limit("1/2").build()).numberOfTables(4).updatedAt(updatedAt).build();
-
-        PokerGameDetail expectedDetail3 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Vic).game("PLO")
-                        .limit("10/25").build()).numberOfTables(1).updatedAt(updatedAt).build();
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Vic,"NLH","1/1"),3,updatedAt);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Vic,"NLH","1/2"),4,updatedAt);
+        PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Vic,"PLO","10/25"),1,updatedAt);
 
         List<PokerGameDetail> actualDetails = underTest.extract(testUserName, testStatus, updatedAt);
 
@@ -75,17 +67,9 @@ public class PokerGameDetailsExtractorTest {
 
         String testUserName = "PSLive_Hippo";
 
-        PokerGameDetail expectedDetail1 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Hippo).game("ROE")
-                        .limit("1/2").build()).numberOfTables(6).updatedAt(updatedAt).build();
-
-        PokerGameDetail expectedDetail2 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Hippo).game("NLH")
-                        .limit("2/5").build()).numberOfTables(1).updatedAt(updatedAt).build();
-
-        PokerGameDetail expectedDetail3 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Hippo).game("PLO")
-                        .limit("1/2").build()).numberOfTables(1).updatedAt(updatedAt).build();
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo,"ROE","1/2"),6,updatedAt);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo,"NLH","2/5"),1,updatedAt);
+        PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo,"PLO","1/2"),1,updatedAt);
 
         List<PokerGameDetail> actualDetails = underTest.extract(testUserName, testStatus, updatedAt);
 
@@ -103,17 +87,9 @@ public class PokerGameDetailsExtractorTest {
                 "£1/1 (3)\n" +
                 "#AspersPoker";
 
-        PokerGameDetail expectedDetail1 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Aspers).game("PLO")
-                        .limit("1/2").build()).numberOfTables(1).updatedAt(updatedAt).build();
-
-        PokerGameDetail expectedDetail2 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Aspers).game("NLH")
-                        .limit("1/2").build()).numberOfTables(1).updatedAt(updatedAt).build();
-
-        PokerGameDetail expectedDetail3 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Aspers).game("NLH")
-                        .limit("1/1").build()).numberOfTables(3).updatedAt(updatedAt).build();
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers,"PLO","1/2"),1,updatedAt);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers,"NLH","1/2"),1,updatedAt);
+        PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers,"NLH","1/1"),3,updatedAt);
 
         String testUserName = "AspersPoker";
 
@@ -136,17 +112,9 @@ public class PokerGameDetailsExtractorTest {
                 "\n" +
                 "#AspersPoker";
 
-        PokerGameDetail expectedDetail1 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Aspers).game("NLH")
-                        .limit("1/1").build()).numberOfTables(3).updatedAt(updatedAt).build();
-
-        PokerGameDetail expectedDetail2 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Aspers).game("NLH")
-                        .limit("1/2").build()).numberOfTables(4).updatedAt(updatedAt).build();
-
-        PokerGameDetail expectedDetail3 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Aspers).game("PLO")
-                        .limit("1/2").build()).numberOfTables(1).updatedAt(updatedAt).build();
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers,"NLH","1/1"),3,updatedAt);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers,"NLH","1/2"),4,updatedAt);
+        PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers,"PLO","1/2"),1,updatedAt);
 
         String testUserName = "AspersPoker";
 
@@ -168,13 +136,31 @@ public class PokerGameDetailsExtractorTest {
 
         String testUserName = "AspersPoker";
 
-        PokerGameDetail expectedDetail1 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Aspers).game("PLO")
-                        .limit("1/2").build()).numberOfTables(1).updatedAt(updatedAt).build();
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers,"PLO","1/2"),1,updatedAt);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers,"NLH","1/2"),2,updatedAt);
 
-        PokerGameDetail expectedDetail2 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Aspers).game("NLH")
-                        .limit("1/2").build()).numberOfTables(2).updatedAt(updatedAt).build();
+        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt);
+
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2);
+        assertThat(actualDetails).hasSize(2);
+
+    }
+
+    @Test
+    public void extractDetailsFromAspers4() {
+        String statusText = "Cash Game Update:\n" +
+                "\n" +
+                "£1/2 (2)\n" +
+                "£1/1 (2)\n" +
+                "\n" +
+                "#AspersPoker";
+
+        String testUserName = "AspersPoker";
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                ,"NLH","1/2"),2,updatedAt);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                ,"NLH","1/1"),2,updatedAt);
 
         List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt);
 
@@ -195,9 +181,7 @@ public class PokerGameDetailsExtractorTest {
 
         String testUserName = "EmpirePokerRoom";
 
-        PokerGameDetail expectedDetail1 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Empire).game("NLH")
-                        .limit("1/2").build()).numberOfTables(5).updatedAt(updatedAt).build();
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire,"NLH","1/2"),5,updatedAt);
 
         List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt);
 
@@ -216,13 +200,8 @@ public class PokerGameDetailsExtractorTest {
 
         String testUserName = "EmpirePokerRoom";
 
-        PokerGameDetail expectedDetail1 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Empire).game("NLH")
-                        .limit("1/2").build()).numberOfTables(5).updatedAt(updatedAt).build();
-
-        PokerGameDetail expectedDetail2 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Empire).game("PLO")
-                        .limit("1/2").build()).numberOfTables(1).updatedAt(updatedAt).build();
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire,"NLH","1/2"),5,updatedAt);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Empire,"PLO","1/2"),1,updatedAt);
 
         List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt);
 
@@ -240,16 +219,13 @@ public class PokerGameDetailsExtractorTest {
 
         String testUserName = "EmpirePokerRoom";
 
-        PokerGameDetail expectedDetail1 = PokerGameDetail.builder()
-                .pokerGame(PokerGame.builder().venue(PokerVenue.Empire).game("NLH")
-                        .limit("1/2").build()).numberOfTables(4).updatedAt(updatedAt).build();
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire,"NLH","1/2"),4,updatedAt);
 
         List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt);
 
         assertThat(actualDetails).contains(expectedDetail1);
         assertThat(actualDetails).hasSize(1);
     }
-
 
     @Test
     public void testNotMatchingStatusTextReturnsEmptyList() {

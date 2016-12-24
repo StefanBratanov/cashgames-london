@@ -5,7 +5,6 @@ import model.PokerGame;
 import model.PokerGameDetail;
 import model.PokerVenue;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -38,14 +37,10 @@ public class PokerGameStoreTest {
     public void persistsPokerGameDetailTwiceWithSamePokerGame() {
         LocalDateTime updatedAt = LocalDateTime.of(2016, 07, 28, 12, 23, 5);
 
-        PokerGame pokerGame = PokerGame.builder().venue(PokerVenue.Empire).game("NLH")
-                .limit("1/2").build();
+        PokerGame pokerGame = new PokerGame(PokerVenue.Empire, "NLH", "1/2");
 
-        PokerGameDetail detail1 = PokerGameDetail.builder()
-                .pokerGame(pokerGame).numberOfTables(4).updatedAt(updatedAt).build();
-
-        PokerGameDetail detail2 = PokerGameDetail.builder()
-                .pokerGame(pokerGame).numberOfTables(5).updatedAt(updatedAt).build();
+        PokerGameDetail detail1 = new PokerGameDetail(pokerGame, 4, updatedAt);
+        PokerGameDetail detail2 = new PokerGameDetail(pokerGame, 5, updatedAt);
 
         pokerGameStore.persistPokerGameDetail(detail1);
         pokerGameStore.persistPokerGameDetail(detail2);
