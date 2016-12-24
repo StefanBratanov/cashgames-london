@@ -7,7 +7,8 @@ public enum PokerVenue implements Serializable {
 
     Vic("ThePokerRoomUK", 181360931L),
     Hippo("PSLive_Hippo", 715122811L),
-    Aspers("AspersPoker", 482125393L);
+    Aspers("AspersPoker", 482125393L),
+    Empire("EmpirePokerRoom",139255989L);
 
     private final String twitterName;
     private final Long twitterId;

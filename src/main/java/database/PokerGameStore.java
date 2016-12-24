@@ -29,4 +29,8 @@ public class PokerGameStore {
         session.evict(detail);
 
     }
+
+    public Session getSession() {
+        return session;
+    }
 }

@@ -183,6 +183,72 @@ public class PokerGameDetailsExtractorTest {
 
     }
 
+    @Test
+    public void extractDetailsFromEmpire1() {
+        String statusText = "NEW GAME\n" +
+                "1 x Private Table\n" +
+                "5 x 1/2 NLH\n" +
+                "1 x Tourney FT\n" +
+                "\n" +
+                "#wpae\n" +
+                "#56suited";
+
+        String testUserName = "EmpirePokerRoom";
+
+        PokerGameDetail expectedDetail1 = PokerGameDetail.builder()
+                .pokerGame(PokerGame.builder().venue(PokerVenue.Empire).game("NLH")
+                        .limit("1/2").build()).numberOfTables(5).updatedAt(updatedAt).build();
+
+        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt);
+
+        assertThat(actualDetails).contains(expectedDetail1);
+        assertThat(actualDetails).hasSize(1);
+    }
+
+    @Test
+    public void extractDetailsFromEmpire2() {
+        String statusText = "STILL SIX GAMES!\n" +
+                "\n" +
+                "5 x £1/£2 NLH\n" +
+                "1 x £1/£2 PLO\n" +
+                "\n" +
+                "#wpae";
+
+        String testUserName = "EmpirePokerRoom";
+
+        PokerGameDetail expectedDetail1 = PokerGameDetail.builder()
+                .pokerGame(PokerGame.builder().venue(PokerVenue.Empire).game("NLH")
+                        .limit("1/2").build()).numberOfTables(5).updatedAt(updatedAt).build();
+
+        PokerGameDetail expectedDetail2 = PokerGameDetail.builder()
+                .pokerGame(PokerGame.builder().venue(PokerVenue.Empire).game("PLO")
+                        .limit("1/2").build()).numberOfTables(1).updatedAt(updatedAt).build();
+
+        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt);
+
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2);
+        assertThat(actualDetails).hasSize(2);
+    }
+
+    @Test
+    public void extractDetailsFromEmpire3() {
+        String statusText = "4 £1/£2 games running.\n" +
+                "\n" +
+                "5 left in the tourney.\n" +
+                "\n" +
+                "#WPAE";
+
+        String testUserName = "EmpirePokerRoom";
+
+        PokerGameDetail expectedDetail1 = PokerGameDetail.builder()
+                .pokerGame(PokerGame.builder().venue(PokerVenue.Empire).game("NLH")
+                        .limit("1/2").build()).numberOfTables(4).updatedAt(updatedAt).build();
+
+        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt);
+
+        assertThat(actualDetails).contains(expectedDetail1);
+        assertThat(actualDetails).hasSize(1);
+    }
 
 
     @Test

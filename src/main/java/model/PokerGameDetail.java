@@ -14,11 +14,11 @@ public class PokerGameDetail implements Serializable {
 
     @Id
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private final PokerGame pokerGame;
+    private PokerGame pokerGame;
 
     @Column(name = "NumberOfTables")
-    private final Integer numberOfTables;
+    private Integer numberOfTables;
 
     @Column(name = "UpdatedAt")
-    private final LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 }

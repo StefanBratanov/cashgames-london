@@ -28,16 +28,19 @@ public class PokerGameDetailsExtractor {
     private static final Pattern PATTERN_1 = Pattern.compile("(?<game>NLH|PLO)(?<info>(\\d+(-|/)\\d+\\(\\d+\\))+)", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_2 = Pattern.compile("(?<!,)(?<info>\\d+x\\d+/\\d+)(?<game>ROE|PLO|NLH)", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_3 = Pattern.compile("(?<game>NLH|PLO)(?<info>(\\d+x\\d+/\\d+(,)?)+)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PATTERN_4 = Pattern.compile("(?<info>(\\d+,\\d+/\\d+))(.*[game|games|running].*)", Pattern.CASE_INSENSITIVE);
 
     public List<PokerGameDetail> extract(String username, String statusText, LocalDateTime updatedAt) {
 
         //very dodgy replacing
-        String strippedStatusText = statusText.replaceAll("(?<=\\d)(\\n|\\s)+(?=\\d+x|X)", ",")
+        String strippedStatusText = statusText
+                .replaceAll("((?<=\\d)(\\n|\\s)+(?=\\d+x|X)|(?<=\\d)\\s+(?=(£?\\d+/£?\\d+)))",",")
                 .replaceAll("[^a-zA-Z0-9\\(\\)\\-/,]", "").replaceAll("(?i)omaha", "PLO");
 
         List<PokerGameDetail> details = new ArrayList<>();
 
-        Optional<Matcher> optionalMatcher = Arrays.asList(PATTERN_1, PATTERN_2, PATTERN_3)
+        Optional<Matcher> optionalMatcher = Arrays.asList(PATTERN_1, PATTERN_2,
+                PATTERN_3, PATTERN_4)
                 .stream()
                 .filter(pattern -> pattern.asPredicate().test(strippedStatusText))
                 .map(pattern -> pattern.matcher(strippedStatusText))
@@ -47,15 +50,22 @@ public class PokerGameDetailsExtractor {
             Matcher matcher = optionalMatcher.get();
             matcher.reset();
             while (matcher.find()) {
-                String game = matcher.group("game").toUpperCase();
+                String game;
+                try {
+                    game = matcher.group("game");
+                } catch (IllegalArgumentException e) {
+                    //default to NLH
+                    game = "NLH";
+                }
                 PokerVenue pokerVenue = PokerVenue.fromTwitterName(username);
                 String info = matcher.group("info");
                 List<Pair<String, Integer>> limitAndTablesList = limitAndTablesExtractor.extract(info);
+                final String finalGame = game;
                 limitAndTablesList
                         .forEach(limitAndTables -> {
                             PokerGameDetail detail = PokerGameDetail.builder()
                                     .pokerGame(PokerGame.builder()
-                                            .venue(pokerVenue).game(game).limit(limitAndTables.getKey())
+                                            .venue(pokerVenue).game(finalGame.toUpperCase()).limit(limitAndTables.getKey())
                                             .build())
                                     .numberOfTables(limitAndTables.getValue())
                                     .updatedAt(updatedAt)

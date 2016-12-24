@@ -44,6 +44,17 @@ public class LimitAndTablesExtractorTest {
     }
 
     @Test
+    public void testsExtractingUsingPattern3() {
+        String text = "4,1/2";
+        List<Pair<String, Integer>> actual = underTest.extract(text);
+
+        Pair<String, Integer> first = actual.get(0);
+
+        assertThat(first.getKey(), is("1/2"));
+        assertThat(first.getValue(), is(4));
+    }
+
+    @Test
     public void testNotMatchingTextReturnsEmptyList() {
         String text = "crap";
 
