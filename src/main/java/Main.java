@@ -1,6 +1,8 @@
 import common.GuiceInitialiser;
 import database.DatabaseModule;
 import extractors.ExtractorsModule;
+import properties.PropertiesModule;
+import server.ServerModule;
 import services.ServiceModule;
 import lombok.extern.slf4j.Slf4j;
 import twitter.TwitterModule;
@@ -15,6 +17,8 @@ public class Main {
                 new TwitterModule(),
                 new TwitterStreamModule(),
                 new ExtractorsModule(),
-                new DatabaseModule());
+                new DatabaseModule(),
+                new PropertiesModule(),
+                new ServerModule());
     }
 }

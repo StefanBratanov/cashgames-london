@@ -5,6 +5,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.multibindings.Multibinder;
+import server.JettyService;
 import twitter_stream.TwitterStreamService;
 
 import java.util.Set;
@@ -17,6 +18,7 @@ public class ServiceModule extends AbstractModule {
         Multibinder<Service> serviceMultibinder = Multibinder.newSetBinder(binder(), Service.class);
 
         serviceMultibinder.addBinding().to(TwitterStreamService.class);
+        serviceMultibinder.addBinding().to(JettyService.class);
 
     }
 

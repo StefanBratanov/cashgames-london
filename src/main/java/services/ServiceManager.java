@@ -19,8 +19,7 @@ public class ServiceManager {
     public void startAll() {
         services.forEach(service -> {
             service.startAsync();
-            service.awaitRunning();
-            log.info(format("[%s] has been started", service.getClass().getTypeName()));
+            log.info(format("[%s] is starting...", service.getClass().getTypeName()));
         });
     }
 

@@ -1,0 +1,64 @@
+package server;
+
+import api.PokerGamesApi;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.handler.DefaultHandler;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.glassfish.jersey.servlet.ServletContainer;
+
+import java.net.URL;
+
+import static java.lang.String.format;
+
+@Slf4j
+public class ServerModule extends AbstractModule {
+
+    @Override
+    protected void configure() {
+
+    }
+
+    @Provides
+    @Singleton
+    public Server server(@Named("server.port") String port) {
+        Server server = new Server(Integer.valueOf(port));
+
+        ContextHandler context = new ContextHandler();
+        context.setContextPath("/");
+
+        ResourceHandler resource_handler = new ResourceHandler();
+        String baseStr = "/webapp";
+        URL baseUrl = getClass().getResource(baseStr);
+        String basePath = baseUrl.toExternalForm();
+        resource_handler.setResourceBase(basePath);
+        resource_handler.setWelcomeFiles(new String[]{"index.html"});
+
+        context.setHandler(resource_handler);
+
+        ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        servletContextHandler.setContextPath("/");
+
+        ServletHolder jerseyServlet = servletContextHandler.addServlet(ServletContainer.class, "/*");
+        jerseyServlet.setInitOrder(0);
+        jerseyServlet.setInitParameter("jersey.config.server.provider.classnames", PokerGamesApi.class.getCanonicalName());
+
+        HandlerList handlers = new HandlerList();
+        handlers.setHandlers(new Handler[]{context, servletContextHandler, new DefaultHandler()});
+
+        server.setHandler(handlers);
+
+        log.info(format("Jetty server is setup to start on port [%s]", port));
+
+        return server;
+    }
+}
