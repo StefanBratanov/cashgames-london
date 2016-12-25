@@ -1,10 +1,10 @@
 package server;
 
-import api.PokerGamesApi;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import com.google.inject.servlet.GuiceFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -12,16 +12,16 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.glassfish.jersey.servlet.ServletContainer;
 
 import java.net.URL;
 
 import static java.lang.String.format;
 
 @Slf4j
-public class ServerModule extends AbstractModule {
+public class ServerModule extends AbstractModule{
+
 
     @Override
     protected void configure() {
@@ -45,12 +45,9 @@ public class ServerModule extends AbstractModule {
 
         context.setHandler(resource_handler);
 
-        ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        servletContextHandler.setContextPath("/");
-
-        ServletHolder jerseyServlet = servletContextHandler.addServlet(ServletContainer.class, "/*");
-        jerseyServlet.setInitOrder(0);
-        jerseyServlet.setInitParameter("jersey.config.server.provider.classnames", PokerGamesApi.class.getCanonicalName());
+        ServletContextHandler servletContextHandler = new ServletContextHandler();
+        servletContextHandler.addFilter(GuiceFilter.class, "/*", null);
+        servletContextHandler.addServlet(DefaultServlet.class, "/");
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{context, servletContextHandler, new DefaultHandler()});

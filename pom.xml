@@ -12,8 +12,9 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <slf4jVersion>1.6.1</slf4jVersion>
-        <guiceVersion>4.1.0</guiceVersion>
-        <jettyVersion>9.4.0.v20161208</jettyVersion>
+        <guiceVersion>3.0</guiceVersion>
+        <jettyVersion>9.0.4.v20130625</jettyVersion>
+        <jerseyVersion>1.18</jerseyVersion>
     </properties>
 
     <dependencies>
@@ -98,33 +99,17 @@
             <version>${jettyVersion}</version>
         </dependency>
 
-
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-util</artifactId>
-            <version>${jettyVersion}</version>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>jersey-guice</artifactId>
+            <version>${jerseyVersion}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-server</artifactId>
-            <version>2.7</version>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-json</artifactId>
+            <version>${jerseyVersion}</version>
         </dependency>
-
-
-        <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-servlet-core</artifactId>
-            <version>2.7</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-jetty-http</artifactId>
-            <version>2.7</version>
-        </dependency>
-
 
         <!-- test dependencies -->
         <dependency>
@@ -167,11 +152,20 @@
                                     <mainClass>Main</mainClass>
                                 </transformer>
                             </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
-
 </project>

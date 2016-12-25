@@ -1,7 +1,10 @@
 package model;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.ser.std.ToStringSerializer;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,6 +13,7 @@ import java.time.LocalDateTime;
 @ToString
 @EqualsAndHashCode
 @Entity
+@Getter
 public class PokerGameDetail implements Serializable {
 
     public PokerGameDetail() {
@@ -30,13 +34,11 @@ public class PokerGameDetail implements Serializable {
     private Integer numberOfTables;
 
     @Column(name = "UpdatedAt")
+    @JsonSerialize(using = ToStringSerializer.class)
     private LocalDateTime updatedAt;
 
     @Column(name = "twitterUrl")
     private String twitterUrl;
 
-    public PokerGame getPokerGame() {
-        return pokerGame;
-    }
 
 }
