@@ -81,6 +81,28 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
+    public void extractDetailsFromHippo2() {
+        String testStatus = "Rake Free Draw 14:00\n" +
+                "\n" +
+                "1 x £1/£2 NLH\n" +
+                "\n" +
+                "We Are Poker,\n" +
+                "Any Game, Any Time\n" +
+                "\n" +
+                "#PSLive\n" +
+                "#PokerStarsFestival";
+
+        String testUserName = "PSLive_Hippo";
+
+        PokerGameDetail expectedDetail = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "1/2"), 1, updatedAt, twitterUrl);
+
+        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, testStatus, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail);
+        assertThat(actualDetails).hasSize(1);
+    }
+
+    @Test
     public void extractDetailsFromAspers1() {
         String statusText = "Aspers Poker Cash Game Update:\n" +
                 "#PLO\n" +
