@@ -1,10 +1,61 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html ng-app="poker-games">
+<head>
+    <title>Poker Cashgames in London</title>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css"
+          media="screen,projection"/>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+    <script src="js/controller.js"></script>
+</head>
+
 <body>
 
-<h1>My First Heading</h1>
+<div class="container">
+    <nav class="light-blue lighten-1">
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo center">Poker Cashgames in London</a>
+        </div>
+    </nav>
+</div>
 
-<p>My first paragraph.</p>
+<div class="container">
+    <div class="section">
+        <div ng-controller="pokerGamesController">
+            <table class="highlight">
+                <thead>
+                <tr>
+                    <th>Casino</th>
+                    <th>Game</th>
+                    <th>Limit</th>
+                    <th>Number of Tables</th>
+                    <th>Updated At</th>
+                    <th>Source</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="detail in details">
+                    <td>{{ detail.pokerGame.venue }}</td>
+                    <td>{{ detail.pokerGame.game }}</td>
+                    <td>{{ detail.pokerGame.limit }}</td>
+                    <td>{{ detail.numberOfTables }}</td>
+                    <td>{{ detail.updatedAt }}</td>
+                    <td><a href="{{detail.twitterUrl}}" target="_blank">
+                        <img src="twitterBird.png" width=50 height=50 class="responsive-img"></img></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

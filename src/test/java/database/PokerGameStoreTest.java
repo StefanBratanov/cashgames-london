@@ -40,26 +40,30 @@ public class PokerGameStoreTest {
 
     @Test
     @Ignore
-    public void persistsTheePokerGameDetailsOneWithSamePokerGameAndGetsThem() {
+    public void persistsFourPokerGameDetailsOneWithSamePokerGameAndGetsThem() {
         LocalDateTime updatedAt = LocalDateTime.of(2016, 07, 28, 12, 23, 5);
         String twitterUrl = "http://www.test.com";
 
         PokerGame pokerGame = new PokerGame(PokerVenue.Empire, "NLH", "1/2");
         PokerGame pokerGame1 = new PokerGame(PokerVenue.Vic, "NLH", "1/2");
+        PokerGame pokerGame2 = new PokerGame(PokerVenue.Aspers, "NLH", "1/2");
+
+
 
         PokerGameDetail detail1 = new PokerGameDetail(pokerGame, 4, updatedAt, twitterUrl);
         PokerGameDetail detail2 = new PokerGameDetail(pokerGame, 5, updatedAt, twitterUrl);
         PokerGameDetail detail3 = new PokerGameDetail(pokerGame1, 3, updatedAt, twitterUrl);
-
+        PokerGameDetail detail4 = new PokerGameDetail(pokerGame2, 3, updatedAt, twitterUrl);
 
         underTest.persistPokerGameDetail(detail1);
         underTest.persistPokerGameDetail(detail2);
         underTest.persistPokerGameDetail(detail3);
+        underTest.persistPokerGameDetail(detail4);
 
         List<PokerGameDetail> actualDetails = underTest.getPokerGameDetails();
 
-        assertThat(actualDetails).hasSize(2);
-        assertThat(actualDetails).contains(detail2, detail3);
+        assertThat(actualDetails).hasSize(3);
+        assertThat(actualDetails).contains(detail2, detail3,detail4);
 
     }
 }

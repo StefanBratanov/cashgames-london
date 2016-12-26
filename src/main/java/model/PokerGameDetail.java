@@ -1,5 +1,6 @@
 package model;
 
+import common.LocalDateTimeSerializer;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -34,7 +35,7 @@ public class PokerGameDetail implements Serializable {
     private Integer numberOfTables;
 
     @Column(name = "UpdatedAt")
-    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime updatedAt;
 
     @Column(name = "twitterUrl")
