@@ -35,6 +35,7 @@ public class PokerGameDetailsExtractor {
         //very dodgy replacing
         String strippedStatusText = statusText
                 .replaceAll("\\d{1,2}:\\d{2}", "")
+                .replaceAll("4/5/6", "")
                 .replaceAll("((?<=\\d)(\\n|\\s)+(?=\\d+x|X)|(?<=\\d)\\s+(?=(£?\\d+/£?\\d+)))", ",")
                 .replaceAll("[^a-zA-Z0-9\\(\\)\\-/,]", "").replaceAll("(?i)omaha", "PLO");
 

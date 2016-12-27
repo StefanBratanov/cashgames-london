@@ -253,6 +253,28 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
+    public void extractDetailsFromEmpire4() {
+        String statusText = "NEW GAME\n" +
+                "1 x 1/2 PLO Mixed 4/5/6\n" +
+                "5 x 1/2 NLH\n" +
+                "\n" +
+                "#wpae\n" +
+                "#56suited\n" +
+                "#teamempire";
+
+        String testUserName = "EmpirePokerRoom";
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 5, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "PLO", "1/2"), 1, updatedAt, twitterUrl);
+
+        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2);
+        assertThat(actualDetails).hasSize(2);
+    }
+
+
+    @Test
     public void testNotMatchingStatusTextReturnsEmptyList() {
         String statusText = "crap";
         String testUserName = "ThePokerRoomUK";
