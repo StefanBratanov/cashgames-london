@@ -1,13 +1,12 @@
 package extractors;
 
 import com.google.inject.Inject;
-import javafx.util.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import model.PokerGame;
 import model.PokerGameDetail;
-import model.PokerGame;
 import model.PokerVenue;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class PokerGameDetailsExtractor {
 
         //very dodgy replacing
         String strippedStatusText = statusText
-                .replaceAll("\\d{1,2}:\\d{2}","")
+                .replaceAll("\\d{1,2}:\\d{2}", "")
                 .replaceAll("((?<=\\d)(\\n|\\s)+(?=\\d+x|X)|(?<=\\d)\\s+(?=(£?\\d+/£?\\d+)))", ",")
                 .replaceAll("[^a-zA-Z0-9\\(\\)\\-/,]", "").replaceAll("(?i)omaha", "PLO");
 

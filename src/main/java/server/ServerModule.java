@@ -6,10 +6,11 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.servlet.GuiceFilter;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
-import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.DefaultServlet;
@@ -20,7 +21,7 @@ import java.net.URL;
 import static java.lang.String.format;
 
 @Slf4j
-public class ServerModule extends AbstractModule{
+public class ServerModule extends AbstractModule {
 
 
     @Override
@@ -30,8 +31,8 @@ public class ServerModule extends AbstractModule{
 
     @Provides
     @Singleton
-    public Server server(@Named("server.port") String port) {
-        Server server = new Server(Integer.valueOf(port));
+    public Server server(@Named("server.port") String port, @Named("server.host") String serverHost) {
+        Server server = new Server();
 
         ContextHandler context = new ContextHandler();
         context.setContextPath("/");
@@ -50,9 +51,14 @@ public class ServerModule extends AbstractModule{
         servletContextHandler.addServlet(DefaultServlet.class, "/");
 
         HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[]{context, servletContextHandler, new DefaultHandler()});
+        handlers.setHandlers(new Handler[]{context, servletContextHandler});
 
         server.setHandler(handlers);
+
+        final ServerConnector connector = new ServerConnector(server);
+        connector.setPort(Integer.valueOf(port));
+        connector.setHost(serverHost);
+        server.setConnectors(new Connector[]{connector});
 
         log.info(format("Jetty server is setup to start on port [%s]", port));
 

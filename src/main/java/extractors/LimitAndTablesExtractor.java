@@ -1,8 +1,8 @@
 package extractors;
 
 import com.google.inject.Singleton;
-import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ public class LimitAndTablesExtractor {
     private static final Pattern PATTERN_2 = Pattern.compile("(?<tables>\\d+)X(?<sb>\\d+)/(?<bb>\\d+)", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_3 = Pattern.compile("(?<tables>\\d+),(?<sb>\\d+)/(?<bb>\\d+)");
 
-    public List<Pair<String, Integer>> extract(String text) {
+    public List<Pair<String,Integer>> extract(String text) {
 
         List<Pair<String, Integer>> limitAndTables = new ArrayList<>();
 
@@ -36,7 +36,7 @@ public class LimitAndTablesExtractor {
             matcher.reset();
             while (matcher.find()) {
                 String limit = matcher.group("sb") + "/" + matcher.group("bb");
-                Pair<String, Integer> pair = new Pair<>(limit, Integer.valueOf(matcher.group("tables")));
+                Pair<String, Integer> pair = Pair.of(limit,Integer.valueOf(matcher.group("tables")));
                 limitAndTables.add(pair);
             }
         } else {
