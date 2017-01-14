@@ -2,7 +2,6 @@ package extractors;
 
 import model.PokerGame;
 import model.PokerGameDetail;
-import model.PokerGame;
 import model.PokerVenue;
 import org.junit.Assert;
 import org.junit.Before;
@@ -103,6 +102,31 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
+    public void extractDetailsFromHippo3() {
+        String testStatus = "Cash Game Update\n" +
+                "\n" +
+                "1 X £2/£5 NLH\n" +
+                "6 x £1/£2 NLH\n" +
+                "\n" +
+                "We Are Poker,\n" +
+                "Any Game, Any Time!\n" +
+                "\n" +
+                "#PSLive\n" +
+                "#PokerStarsFestival";
+
+        String testUserName = "PSLive_Hippo";
+
+        PokerGameDetail expectedDetail = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "2/5"), 1, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "1/2"), 6, updatedAt, twitterUrl);
+
+
+        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, testStatus, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail,expectedDetail1);
+        assertThat(actualDetails).hasSize(2);
+    }
+
+    @Test
     public void extractDetailsFromAspers1() {
         String statusText = "Aspers Poker Cash Game Update:\n" +
                 "#PLO\n" +
@@ -195,6 +219,30 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
+    public void extractDetailsFromAspers5() {
+        String statusText = "Cash game Update:\n" +
+                "\n" +
+                "#NLH\n" +
+                "2 x £1/2\n" +
+                "4 x £1/1\n" +
+                "\n" +
+                "#AspersPoker";
+
+        String testUserName = "AspersPoker";
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/2"), 2, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/1"), 4, updatedAt, twitterUrl);
+
+        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2);
+        assertThat(actualDetails).hasSize(2);
+
+    }
+
+    @Test
     public void extractDetailsFromEmpire1() {
         String statusText = "NEW GAME\n" +
                 "1 x Private Table\n" +
@@ -273,6 +321,49 @@ public class PokerGameDetailsExtractorTest {
         assertThat(actualDetails).hasSize(2);
     }
 
+    @Test
+    public void extractDetailsFromEmpire5() {
+        String statusText = "4 £1/£2 games running now!!\n" +
+                "\n" +
+                "Still 5 tables in the tourney.\n" +
+                "\n" +
+                "#WPAE";
+
+        String testUserName = "EmpirePokerRoom";
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 4, updatedAt, twitterUrl);
+
+
+        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1);
+        assertThat(actualDetails).hasSize(1);
+    }
+
+    @Test
+    public void extractDetailsFromEmpire6() {
+        String statusText = "One game remains...\n" +
+                "\n" +
+                "1 x £1/£2 NLH\n" +
+                "\n" +
+                "2pm comp is our £20 rebuy \n" +
+                "\n" +
+                "Badbeat jackpot is £52,871\n" +
+                "\n" +
+                "#56suited \n" +
+                "#teamempire \n" +
+                "#wpae";
+
+        String testUserName = "EmpirePokerRoom";
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 1, updatedAt, twitterUrl);
+
+
+        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1);
+        assertThat(actualDetails).hasSize(1);
+    }
 
     @Test
     public void testNotMatchingStatusTextReturnsEmptyList() {
