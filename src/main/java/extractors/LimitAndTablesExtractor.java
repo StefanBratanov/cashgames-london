@@ -19,13 +19,14 @@ public class LimitAndTablesExtractor {
 
     private static final Pattern PATTERN_1 = Pattern.compile("(?<sb>\\d+)(-|/)(?<bb>\\d+)\\((?<tables>\\d+)\\)");
     private static final Pattern PATTERN_2 = Pattern.compile("(?<tables>\\d+)X(?<sb>\\d+)/(?<bb>\\d+)", Pattern.CASE_INSENSITIVE);
-    private static final Pattern PATTERN_3 = Pattern.compile("(?<tables>\\d+),(?<sb>\\d+)/(?<bb>\\d+)");
+    private static final Pattern PATTERN_3 = Pattern.compile("(?<!x)(?<tables>\\d+),(?<sb>\\d+)/(?<bb>\\d+)",Pattern.CASE_INSENSITIVE);
+    private static final Pattern PATTERN_4 = Pattern.compile("(?<sb>\\d+)/(?<bb>\\d+)X(?<tables>\\d+)",Pattern.CASE_INSENSITIVE);
 
     public List<Pair<String,Integer>> extract(String text) {
 
         List<Pair<String, Integer>> limitAndTables = new ArrayList<>();
 
-        Optional<Matcher> optionalMatcher = Arrays.asList(PATTERN_1, PATTERN_2,PATTERN_3)
+        Optional<Matcher> optionalMatcher = Arrays.asList(PATTERN_1, PATTERN_2,PATTERN_3,PATTERN_4)
                 .stream()
                 .map(pattern -> pattern.matcher(text))
                 .filter(Matcher::find)
