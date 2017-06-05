@@ -112,12 +112,12 @@ public class TestStatus implements Status {
 
             @Override
             public String getProfileImageURL() {
-                return null;
+                return "http://stuff.com/pic1.jpg";
             }
 
             @Override
             public String getBiggerProfileImageURL() {
-                return null;
+                return "http://stuff.com/pic1.jpg";
             }
 
             @Override
@@ -127,7 +127,7 @@ public class TestStatus implements Status {
 
             @Override
             public String getOriginalProfileImageURL() {
-                return null;
+                return "http://stuff.com/pic1.jpg";
             }
 
             @Override

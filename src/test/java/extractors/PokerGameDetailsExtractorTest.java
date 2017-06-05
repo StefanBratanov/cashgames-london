@@ -23,7 +23,7 @@ public class PokerGameDetailsExtractorTest {
 
     @Before
     public void init() {
-        updatedAt = LocalDateTime.of(2016, 07, 28, 12, 23, 5);
+        updatedAt = LocalDateTime.of(2016, 7, 28, 12, 23, 5);
         twitterUrl = "http://www.test.com";
         LimitAndTablesExtractor limitAndTablesExtractor = new LimitAndTablesExtractor();
         underTest = new PokerGameDetailsExtractor(limitAndTablesExtractor);
@@ -41,13 +41,13 @@ public class PokerGameDetailsExtractorTest {
                 "\n" +
                 "#Gcpoker";
 
-        String testUserName = "ThePokerRoomUK";
+        PokerVenue pokerVenue = PokerVenue.Vic;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Vic, "NLH", "1/1"), 3, updatedAt, twitterUrl);
         PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Vic, "NLH", "1/2"), 4, updatedAt, twitterUrl);
         PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Vic, "PLO", "10/25"), 1, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, testStatus, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, testStatus, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1, expectedDetail2, expectedDetail3);
         assertThat(actualDetails).hasSize(3);
@@ -67,13 +67,13 @@ public class PokerGameDetailsExtractorTest {
                 "\n" +
                 "#PSLive";
 
-        String testUserName = "PSLive_Hippo";
+        PokerVenue pokerVenue = PokerVenue.Hippo;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "ROE", "1/2"), 6, updatedAt, twitterUrl);
         PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "2/5"), 1, updatedAt, twitterUrl);
         PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "PLO", "1/2"), 1, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, testStatus, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, testStatus, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1, expectedDetail2, expectedDetail3);
         assertThat(actualDetails).hasSize(3);
@@ -91,11 +91,11 @@ public class PokerGameDetailsExtractorTest {
                 "#PSLive\n" +
                 "#PokerStarsFestival";
 
-        String testUserName = "PSLive_Hippo";
+        PokerVenue pokerVenue = PokerVenue.Hippo;
 
         PokerGameDetail expectedDetail = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "1/2"), 1, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, testStatus, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, testStatus, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail);
         assertThat(actualDetails).hasSize(1);
@@ -114,15 +114,15 @@ public class PokerGameDetailsExtractorTest {
                 "#PSLive\n" +
                 "#PokerStarsFestival";
 
-        String testUserName = "PSLive_Hippo";
+        PokerVenue pokerVenue = PokerVenue.Hippo;
 
         PokerGameDetail expectedDetail = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "2/5"), 1, updatedAt, twitterUrl);
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "1/2"), 6, updatedAt, twitterUrl);
 
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, testStatus, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, testStatus, updatedAt, twitterUrl);
 
-        assertThat(actualDetails).contains(expectedDetail,expectedDetail1);
+        assertThat(actualDetails).contains(expectedDetail, expectedDetail1);
         assertThat(actualDetails).hasSize(2);
     }
 
@@ -140,9 +140,9 @@ public class PokerGameDetailsExtractorTest {
         PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers, "NLH", "1/2"), 1, updatedAt, twitterUrl);
         PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers, "NLH", "1/1"), 3, updatedAt, twitterUrl);
 
-        String testUserName = "AspersPoker";
+        PokerVenue pokerVenue = PokerVenue.Aspers;
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1, expectedDetail2, expectedDetail3);
         assertThat(actualDetails).hasSize(3);
@@ -165,9 +165,9 @@ public class PokerGameDetailsExtractorTest {
         PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers, "NLH", "1/2"), 4, updatedAt, twitterUrl);
         PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers, "PLO", "1/2"), 1, updatedAt, twitterUrl);
 
-        String testUserName = "AspersPoker";
+        PokerVenue pokerVenue = PokerVenue.Aspers;
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1, expectedDetail2, expectedDetail3);
         assertThat(actualDetails).hasSize(3);
@@ -183,12 +183,12 @@ public class PokerGameDetailsExtractorTest {
                 "\n" +
                 "#AspersPoker #ChristmasCracker";
 
-        String testUserName = "AspersPoker";
+        PokerVenue pokerVenue = PokerVenue.Aspers;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers, "PLO", "1/2"), 1, updatedAt, twitterUrl);
         PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers, "NLH", "1/2"), 2, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1, expectedDetail2);
         assertThat(actualDetails).hasSize(2);
@@ -204,14 +204,14 @@ public class PokerGameDetailsExtractorTest {
                 "\n" +
                 "#AspersPoker";
 
-        String testUserName = "AspersPoker";
+        PokerVenue pokerVenue = PokerVenue.Aspers;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
                 , "NLH", "1/2"), 2, updatedAt, twitterUrl);
         PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
                 , "NLH", "1/1"), 2, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1, expectedDetail2);
         assertThat(actualDetails).hasSize(2);
@@ -228,14 +228,14 @@ public class PokerGameDetailsExtractorTest {
                 "\n" +
                 "#AspersPoker";
 
-        String testUserName = "AspersPoker";
+        PokerVenue pokerVenue = PokerVenue.Aspers;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
                 , "NLH", "1/2"), 2, updatedAt, twitterUrl);
         PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
                 , "NLH", "1/1"), 4, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1, expectedDetail2);
         assertThat(actualDetails).hasSize(2);
@@ -255,7 +255,7 @@ public class PokerGameDetailsExtractorTest {
                 "#AspersPoker\n" +
                 "#DoublePointsDay";
 
-        String testUserName = "AspersPoker";
+        PokerVenue pokerVenue = PokerVenue.Aspers;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
                 , "PLO", "1/2"), 1, updatedAt, twitterUrl);
@@ -264,9 +264,9 @@ public class PokerGameDetailsExtractorTest {
         PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
                 , "NLH", "1/1"), 3, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
-        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2,expectedDetail3);
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2, expectedDetail3);
         assertThat(actualDetails).hasSize(3);
 
     }
@@ -282,7 +282,7 @@ public class PokerGameDetailsExtractorTest {
                 "\n" +
                 "#AspersPoker";
 
-        String testUserName = "AspersPoker";
+        PokerVenue pokerVenue = PokerVenue.Aspers;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
                 , "PLO", "1/2"), 1, updatedAt, twitterUrl);
@@ -291,9 +291,9 @@ public class PokerGameDetailsExtractorTest {
         PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
                 , "NLH", "1/1"), 5, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
-        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2,expectedDetail3);
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2, expectedDetail3);
         assertThat(actualDetails).hasSize(3);
     }
 
@@ -301,7 +301,7 @@ public class PokerGameDetailsExtractorTest {
     public void extractDetailsFromAspers8() {
         String statusText = "Aspers Poker Cash Game Update: #NLH £1/1(3) £1/2(1) #PLO £1/2 (1)";
 
-        String testUserName = "AspersPoker";
+        PokerVenue pokerVenue = PokerVenue.Aspers;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
                 , "PLO", "1/2"), 1, updatedAt, twitterUrl);
@@ -310,9 +310,9 @@ public class PokerGameDetailsExtractorTest {
         PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
                 , "NLH", "1/2"), 1, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
-        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2,expectedDetail3);
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2, expectedDetail3);
         assertThat(actualDetails).hasSize(3);
     }
 
@@ -326,11 +326,11 @@ public class PokerGameDetailsExtractorTest {
                 "#wpae\n" +
                 "#56suited";
 
-        String testUserName = "EmpirePokerRoom";
+        PokerVenue pokerVenue = PokerVenue.Empire;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 5, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1);
         assertThat(actualDetails).hasSize(1);
@@ -345,12 +345,12 @@ public class PokerGameDetailsExtractorTest {
                 "\n" +
                 "#wpae";
 
-        String testUserName = "EmpirePokerRoom";
+        PokerVenue pokerVenue = PokerVenue.Empire;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 5, updatedAt, twitterUrl);
         PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "PLO", "1/2"), 1, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1, expectedDetail2);
         assertThat(actualDetails).hasSize(2);
@@ -364,11 +364,11 @@ public class PokerGameDetailsExtractorTest {
                 "\n" +
                 "#WPAE";
 
-        String testUserName = "EmpirePokerRoom";
+        PokerVenue pokerVenue = PokerVenue.Empire;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 4, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1);
         assertThat(actualDetails).hasSize(1);
@@ -384,12 +384,12 @@ public class PokerGameDetailsExtractorTest {
                 "#56suited\n" +
                 "#teamempire";
 
-        String testUserName = "EmpirePokerRoom";
+        PokerVenue pokerVenue = PokerVenue.Empire;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 5, updatedAt, twitterUrl);
         PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "PLO", "1/2"), 1, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1, expectedDetail2);
         assertThat(actualDetails).hasSize(2);
@@ -403,12 +403,12 @@ public class PokerGameDetailsExtractorTest {
                 "\n" +
                 "#WPAE";
 
-        String testUserName = "EmpirePokerRoom";
+        PokerVenue pokerVenue = PokerVenue.Empire;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 4, updatedAt, twitterUrl);
 
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1);
         assertThat(actualDetails).hasSize(1);
@@ -428,12 +428,12 @@ public class PokerGameDetailsExtractorTest {
                 "#teamempire \n" +
                 "#wpae";
 
-        String testUserName = "EmpirePokerRoom";
+        PokerVenue pokerVenue = PokerVenue.Empire;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 1, updatedAt, twitterUrl);
 
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1);
         assertThat(actualDetails).hasSize(1);
@@ -450,12 +450,12 @@ public class PokerGameDetailsExtractorTest {
                 "#teamempire\n" +
                 "#wpae";
 
-        String testUserName = "EmpirePokerRoom";
+        PokerVenue pokerVenue = PokerVenue.Empire;
 
         PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "PLO", "1/2"), 1, updatedAt, twitterUrl);
         PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 4, updatedAt, twitterUrl);
 
-        List<PokerGameDetail> actualDetails = underTest.extract(testUserName, statusText, updatedAt, twitterUrl);
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1);
         assertThat(actualDetails).contains(expectedDetail2);
@@ -463,10 +463,36 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
+    public void extractDetailsFromAspers9() {
+        String statusText = "Cash Game Update:\n" +
+                "#PLO\n" +
+                "£1/£2 x 2\n" +
+                "#NLH\n" +
+                "£1/£1 x 10\n" +
+                "£1/£2 x 5\n" +
+                "40K Overlay in 888 Live ME\n" +
+                "#AspersPoker #888Live";
+
+        PokerVenue pokerVenue = PokerVenue.Aspers;
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "PLO", "1/2"), 2, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/1"), 10, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/2"), 5, updatedAt, twitterUrl);
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2, expectedDetail3);
+        assertThat(actualDetails).hasSize(3);
+    }
+
+    @Test
     public void testNotMatchingStatusTextReturnsEmptyList() {
         String statusText = "crap";
-        String testUserName = "ThePokerRoomUK";
+        PokerVenue pokerVenue = PokerVenue.Vic;
 
-        Assert.assertThat(underTest.extract(testUserName, statusText, updatedAt, twitterUrl).size(), is(0));
+        Assert.assertThat(underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl).size(), is(0));
     }
 }

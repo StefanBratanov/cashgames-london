@@ -19,6 +19,7 @@
 
     <dependencies>
         <!-- external dependencies -->
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -55,6 +56,13 @@
             <artifactId>guava</artifactId>
             <version>20.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -116,6 +124,7 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.5</version>
         </dependency>
+
 
 
         <!-- test dependencies -->

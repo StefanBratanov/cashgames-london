@@ -11,6 +11,7 @@ public class PokerVenueTest {
 
     @Test
     public void getsPokerVenueFromTwitterName() {
+		
 
         PokerVenue actual = PokerVenue.fromTwitterName("ThePokerRoomUK");
 

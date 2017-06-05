@@ -32,9 +32,7 @@ public class PokerGameDetailsExtractor {
     private static final Pattern PATTERN_5 = Pattern.compile("(?<!NLH|PLO|\\))(?<info>(\\d+(-|/)\\d+\\(\\d+\\))+)", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_6 = Pattern.compile("(?<info>(\\d+,\\d+/\\d+))(.*[game|games|running].*)", Pattern.CASE_INSENSITIVE);
 
-    public List<PokerGameDetail> extract(String username, String statusText, LocalDateTime updatedAt, String twitterUrl) {
-
-        PokerVenue pokerVenue = PokerVenue.fromTwitterName(username);
+    public List<PokerGameDetail> extract(PokerVenue pokerVenue, String statusText, LocalDateTime updatedAt, String twitterUrl) {
 
         String lineSep = StringEscapeUtils.escapeJava(System.lineSeparator());
 
@@ -43,13 +41,14 @@ public class PokerGameDetailsExtractor {
                 .replaceAll("\\d{1,2}:\\d{2}", "")
                 .replaceAll("4/5/6", "")
                 .replaceAll("(((?<=\\d)(" + lineSep + "|\\s)+(?=\\d+\\s*(x|X)))|((?<=\\d)\\s+(?=(£?\\d+/£?\\d+))))", ",")
+                .replaceAll("(?<=(\\d\\n)|(\\d\\r\\n))\\d+.+(\\w+)", "")
                 .replaceAll("[^!a-zA-Z0-9\\(\\)\\-/,]", "")
                 .replaceAll("(?i)omaha", "PLO");
 
         List<PokerGameDetail> details = new ArrayList<>();
 
         Optional<Matcher> optionalMatcher = Arrays.asList(PATTERN_1, PATTERN_2,
-                PATTERN_3, PATTERN_4, PATTERN_5,PATTERN_6)
+                PATTERN_3, PATTERN_4, PATTERN_5, PATTERN_6)
                 .stream()
                 .filter(pattern -> pattern.asPredicate().test(strippedStatusText))
                 .map(pattern -> pattern.matcher(strippedStatusText))

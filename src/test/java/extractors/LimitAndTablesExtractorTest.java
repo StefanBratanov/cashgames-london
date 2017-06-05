@@ -56,15 +56,15 @@ public class LimitAndTablesExtractorTest {
 
     @Test
     public void testsExtractingUsingPattern4() {
-        String text = "1/1x5,1/2x2";
+        String text = "1/1x10,1/2x5";
         List<Pair<String, Integer>> actual = underTest.extract(text);
 
         Pair<String, Integer> first = actual.get(0);
         Pair<String, Integer> second = actual.get(1);
         assertThat(first.getKey(), is("1/1"));
-        assertThat(first.getValue(), is(5));
+        assertThat(first.getValue(), is(10));
         assertThat(second.getKey(), is("1/2"));
-        assertThat(second.getValue(), is(2));
+        assertThat(second.getValue(), is(5));
     }
 
     @Test
@@ -73,4 +73,5 @@ public class LimitAndTablesExtractorTest {
 
         assertThat(underTest.extract(text).size(), is(0));
     }
+
 }

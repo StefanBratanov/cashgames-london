@@ -1,7 +1,7 @@
 <!doctype html>
 <html ng-app="poker-games">
 <head>
-    <title>Poker Cashgames in London</title>
+    <title>Poker Cash Games in London</title>
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css"
@@ -15,51 +15,101 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
     <script src="js/controller.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data.min.js"></script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-99025814-1', 'auto');
+  ga('send', 'pageview');
+
+
+
+    </script>
 </head>
 
 <body>
 
 <div class="container">
-    <nav class="light-blue lighten-1">
-        <div class="nav-wrapper">
-            <a href="#" class="brand-logo center">Poker Cashgames in London</a>
-        </div>
-    </nav>
+    <h3 class="header center light-blue-text">Poker Cash Games in London</h3>
+    <h6 class="header center light-blue-text">Select a casino to see what cash games are running</h6>
 </div>
 
 <div class="container">
     <div class="section">
         <div ng-controller="pokerGamesController">
-            <table class="highlight">
-                <thead>
-                <tr>
-                    <th>Casino</th>
-                    <th>Game</th>
-                    <th>Limit</th>
-                    <th>Number of Tables</th>
-                    <th>Updated At</th>
-                    <th>Source</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="detail in details">
-                    <td>{{ detail.pokerGame.venue }}</td>
-                    <td>{{ detail.pokerGame.game }}</td>
-                    <td>{{ detail.pokerGame.limit }}</td>
-                    <td>{{ detail.numberOfTables }}</td>
-                    <td>{{ detail.updatedAt }}</td>
-                    <td><a href="{{detail.twitterUrl}}" target="_blank">
-                        <img src="twitterBird.png" width=50 height=50 class="responsive-img"></img></a></td>
-                </tr>
-                </tbody>
-            </table>
+            <ul class="collapsible popout" data-collapsible="expandable">
+                <li ng-repeat="detail in details">
+                    <div class="collapsible-header">
+                        <table class="centered">
+                            <tbody>
+                            <tr>
+                                <td style="text-align:left;"><img class="responsive-img circle"
+                                                                  style="vertical-align:middle;margin-top:5px;margin-bottom:5px;"
+                                                                  width="40" height="40"
+                                                                  src="{{ detail.profilePicUrl }}"></img>
+                                    <span style="margin-left:1%">{{ detail.pokerVenue}}</span></td>
+                                <td style="text-align:right;">
+                                    <div ng-if="detail.hasGameDetails">
+                                        <a href="{{detail.twitterUrl}}" target="_blank">
+                                            <img style="vertical-align:middle;"
+                                                 src="twitterBird.png"
+                                                 width="50" height="50" class="responsive-img"></img></a>
+                                        {{ detail.lastUpdated }}
+                                    </div>
+                                    <div ng-if="!detail.hasGameDetails">
+                                        No recent Updates
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="collapsible-body">
+                        <div class="container center-align">
+                            <div ng-if="!detail.hasGameDetails">
+                                <div ng-if="!detail.latestUpdateTime">
+                                    <p class="flow-text header center red-text">No recent updates</p>
+                                </div>
+                                <div ng-if="detail.latestUpdateTime">
+                                    <p class="flow-text header center red-text">Last update has been received {{
+                                        detail.latestUpdateTime }}</p>
+                                </div>
+                            </div>
+                            <div ng-if="detail.hasGameDetails">
+                                <table class="centered">
+                                    <thead>
+                                    <tr>
+                                        <th>Game</th>
+                                        <th>Limit</th>
+                                        <th>Tables</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="gameDetail in detail.pokerGameDetails">
+                                        <td>{{ gameDetail.pokerGame.game }}</td>
+                                        <td>{{ gameDetail.pokerGame.limit }}</td>
+                                        <td>{{ gameDetail.numberOfTables }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
 
 <div class="container">
-    <small>* If a poker game has not been updated for more than 6 hours, It is considered dead and will not be shown
-    </small>
+    <blockquote style="border-left: 5px solid #42a5f5;">
+        <small>If there has been no update for more than 6 hours for a given casino, no games will be shown</small>
+    </blockquote>
 </div>
 
 </body>

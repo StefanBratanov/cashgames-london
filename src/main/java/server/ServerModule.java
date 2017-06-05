@@ -11,6 +11,7 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.DefaultServlet;
@@ -31,7 +32,7 @@ public class ServerModule extends AbstractModule {
 
     @Provides
     @Singleton
-    public Server server(@Named("server.port") String port, @Named("server.host") String serverHost) {
+    public Server server(@Named("server.port") String port, @Named("virtual.host") String virtualHost) {
         Server server = new Server();
 
         ContextHandler context = new ContextHandler();
@@ -57,7 +58,7 @@ public class ServerModule extends AbstractModule {
 
         final ServerConnector connector = new ServerConnector(server);
         connector.setPort(Integer.valueOf(port));
-        connector.setHost(serverHost);
+        connector.setHost(virtualHost);
         server.setConnectors(new Connector[]{connector});
 
         log.info(format("Jetty server is setup to start on port [%s]", port));

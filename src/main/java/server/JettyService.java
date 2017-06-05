@@ -14,7 +14,6 @@ public class JettyService extends AbstractIdleService {
     @Override
     protected void startUp() throws Exception {
         server.start();
-        server.join();
     }
 
     @Override
