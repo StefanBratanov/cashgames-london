@@ -4,5 +4,3 @@
 
 >This application is streaming tweets from casinos in london in real time.
 >It extracts information about poker games and persists it to a database.
-
-You can see the application running on: http://pokercashgames-londonesque.rhcloud.com/
