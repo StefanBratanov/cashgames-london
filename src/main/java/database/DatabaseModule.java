@@ -29,8 +29,7 @@ public class DatabaseModule extends AbstractModule {
     @Singleton
     Connection connection(@Named("db.url") String databaseUrl,
                           @Named("db.username") String username,
-                          @Named("db.pass") String password,
-                          @Named("db.driver") String driver) throws SQLException {
+                          @Named("db.pass") String password) throws SQLException {
 
         Properties connectionProps = new Properties();
         connectionProps.put("user", username);
