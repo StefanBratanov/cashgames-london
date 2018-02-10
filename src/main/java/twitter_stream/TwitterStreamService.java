@@ -25,7 +25,7 @@ public class TwitterStreamService extends AbstractIdleService {
     private final Set<TwitterId> twitterIds;
 
     @Override
-    protected void startUp() throws Exception {
+    protected void startUp() {
         long[] twitterIdsArr = twitterIds.stream().mapToLong(TwitterId::getId).toArray();
         twitterStream.addListener(statusListener);
         twitterStream.filter(new FilterQuery(0, twitterIdsArr, new String[0]));
@@ -34,7 +34,7 @@ public class TwitterStreamService extends AbstractIdleService {
     }
 
     @Override
-    protected void shutDown() throws Exception {
+    protected void shutDown() {
         twitterStream.cleanUp();
         twitterStream.clearListeners();
         twitterStream.shutdown();

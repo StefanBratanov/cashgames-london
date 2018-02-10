@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -49,7 +50,7 @@ public class PokerGamesApi {
                     pokerDao.getLatestUpdateTimeForVenue(venueDetail.getPokerVenue())
                             .ifPresent(venueDetail::setLatestUpdateTime);
                 })
-                .sorted((x, y) -> x.getPokerVenue().name().compareTo(y.getPokerVenue().name()))
+                .sorted(Comparator.comparing(x -> x.getPokerVenue().name()))
                 .collect(Collectors.toList());
 
         Response.ResponseBuilder builder = Response.ok(pokerVenueDetails);
@@ -76,13 +77,10 @@ public class PokerGamesApi {
                 .filter(pokerGameDetail -> {
                     Optional<LocalDateTime> latestTime = Optional.ofNullable(pokerVenueByLatestUpdatedTime.get
                             (pokerGameDetail.getPokerGame().getVenue()));
-                    if (latestTime.isPresent()) {
-                        return pokerGameDetail.getUpdatedAt().equals(latestTime.get());
-                    } else {
-                        return false;
-                    }
-                }).sorted((x, y) -> x.getPokerGame().getVenue().name()
-                        .compareTo(y.getPokerGame().getVenue().name()))
+                    return latestTime
+                            .filter(localDateTime -> pokerGameDetail.getUpdatedAt().equals(localDateTime))
+                            .isPresent();
+                }).sorted(Comparator.comparing(x -> x.getPokerGame().getVenue().name()))
                 .collect(Collectors.toList());
     }
 

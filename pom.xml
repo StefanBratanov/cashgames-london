@@ -15,6 +15,7 @@
         <guiceVersion>3.0</guiceVersion>
         <jettyVersion>9.0.4.v20130625</jettyVersion>
         <jerseyVersion>1.18</jerseyVersion>
+        <lombok.version>1.16.20</lombok.version>
     </properties>
 
     <dependencies>
@@ -71,15 +72,15 @@
         </dependency>
 
         <dependency>
-            <groupId>postgresql</groupId>
+            <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.1-901-1.jdbc4</version>
+            <version>42.2.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.12</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
 

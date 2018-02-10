@@ -32,23 +32,6 @@ public class GuiceInitialiser{
 
         serviceManager.startAll();
 		
-		ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1,
-                new ThreadFactoryBuilder().setDaemon(true).build());
-
-        executorService.scheduleAtFixedRate(() -> {
-            String url = "http://pokerinlondon.co.uk/";
-            HttpClient client = HttpClientBuilder.create().build();
-            HttpGet request = new HttpGet(url);
-            try {
-                HttpResponse response = client.execute(request);
-                log.info(String.format("Successfully tried to access webpage, Status Code [%s]",
-                        response.getStatusLine().getStatusCode()));
-            } catch (IOException e) {
-                log.error("IOException while trying to access webpage: " + e.getMessage());
-            }
-
-        }, 0, 10, TimeUnit.MINUTES);
-
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             serviceManager.stopAll();
             session.close();
