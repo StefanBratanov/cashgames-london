@@ -69,7 +69,7 @@ public class PokerGameDetailsExtractor {
                 String info = matcher.group("info");
                 List<Pair<String, Integer>> limitAndTablesList = limitAndTablesExtractor.extract(info);
                 final String finalGame;
-                if (DS_NLH_GAMES.contains(game)) {
+                if (containsIgnoreCase(DS_NLH_GAMES, game)) {
                     finalGame = "NLH Deepstack";
                 } else {
                     finalGame = game.toUpperCase();
@@ -91,5 +91,10 @@ public class PokerGameDetailsExtractor {
         }
         return details;
 
+    }
+
+    private boolean containsIgnoreCase(List<String> list, String game) {
+        return list.stream()
+                .anyMatch(elem -> elem.equalsIgnoreCase(game));
     }
 }

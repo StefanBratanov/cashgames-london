@@ -127,6 +127,31 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
+    public void extractDetailsFromHippo5() {
+        String testStatus = "CASH GAME UPDATE:\n" +
+                "\n" +
+                "1 x £1/£2 NLH DeepStack (£150 Min - No Max)\n" +
+                "6 x £1/£2 NLH \n" +
+                "\n" +
+                "We Are Poker!\n" +
+                "Any Game, Any Time!\n" +
+                "\n" +
+                "#PSLive\n" +
+                "#PokerstarsMegastackLondon 23rd - 25th February 2018";
+
+        PokerVenue pokerVenue = PokerVenue.Hippo;
+
+        PokerGameDetail expectedDetail = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "1/2"), 6, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH Deepstack", "1/2"), 1, updatedAt, twitterUrl);
+
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, testStatus, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail, expectedDetail1);
+        assertThat(actualDetails).hasSize(2);
+    }
+
+    @Test
     public void extractDetailsFromHippo4() {
         String testStatus = "\uD83D\uDCA5£1/£2 NLH DEEPSTACK IS OPEN!!!!\uD83D\uDCA5\n" +
                 "\n" +
