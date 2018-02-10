@@ -63,9 +63,9 @@ public class ServerModule extends AbstractModule {
             portNumber = Integer.valueOf(getenv("PORT"));
         } else {
             portNumber = Integer.valueOf(port);
+            connector.setHost(virtualHost);
         }
         connector.setPort(portNumber);
-        connector.setHost(virtualHost);
         server.setConnectors(new Connector[]{connector});
 
         log.info(format("Jetty server is setup to start on port [%s]", port));
