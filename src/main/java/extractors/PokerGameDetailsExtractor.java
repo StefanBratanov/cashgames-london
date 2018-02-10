@@ -45,10 +45,12 @@ public class PokerGameDetailsExtractor {
                 .replaceAll("4/5/6", "")
                 .replaceAll("(((?<=\\d)(" + lineSep + "|\\s)+(?=\\d+\\s*(x|X)))|((?<=\\d)\\s+(?=(£?\\d+/£?\\d+))))", ",")
                 .replaceAll("(?<=(\\d\\n)|(\\d\\r\\n))\\d+.+(\\w+)", "")
-                .replaceAll("[^!a-zA-Z0-9(\\)\\-/,]", "")
+                .replaceAll("[^!a-zA-Z0-9()\\-/,]", "")
                 //plo specific replace
                 .replaceAll("((?i)mixed|(?i)mix)","")
-                .replaceAll("(?i)omaha", "PLO");
+                .replaceAll("(?i)omaha", "PLO")
+                //remove commas between games
+                .replaceAll(",(?=\\d+X)","");
 
         List<PokerGameDetail> details = new ArrayList<>();
 
