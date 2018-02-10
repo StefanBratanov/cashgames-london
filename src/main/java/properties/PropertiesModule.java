@@ -5,8 +5,10 @@ import com.google.inject.name.Names;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
-import java.util.Optional;
 import java.util.Properties;
+
+import static java.lang.System.getenv;
+import static java.util.Objects.nonNull;
 
 @Slf4j
 public class PropertiesModule extends AbstractModule {
@@ -18,9 +20,13 @@ public class PropertiesModule extends AbstractModule {
             Properties props = new Properties(defaults);
             String propertiesFilename;
             String hibernateConfigFilename;
-            if (Optional.ofNullable(System.getenv("OPENSHIFT_APP_NAME")).isPresent()) {
+            //TODO: find better way to determine what properties to use for heroku
+            if (nonNull(getenv("JDBC_DATABASE_URL"))) {
                 propertiesFilename = "cashgames.properties";
                 hibernateConfigFilename = "hibernate.cfg.xml";
+                props.put("db.url", getenv("JDBC_DATABASE_URL"));
+                props.put("db.username", getenv("JDBC_DATABASE_USERNAME"));
+                props.put("db.pass", getenv("JDBC_DATABASE_PASSWORD"));
             } else {
                 propertiesFilename = "cashgames-local.properties";
                 hibernateConfigFilename = "hibernate-local.cfg.xml";
