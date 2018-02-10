@@ -45,12 +45,18 @@ public class DatabaseModule extends AbstractModule {
     @Provides
     @Singleton
     Session session(@Named("hibernate.config.filename") String configFile) {
-        SessionFactory sessionFactory = new Configuration().configure(configFile)
-                .buildSessionFactory();
-        Session session = sessionFactory.openSession();
-        log.info(format("Successfully connected to database[%s] using Hibernate", sessionFactory
-                .getProperties().get("hibernate.connection.url")));
-        return session;
+        try {
+            SessionFactory sessionFactory = new Configuration().configure(configFile)
+                    .buildSessionFactory();
+            Session session = sessionFactory.openSession();
+            log.info(format("Successfully connected to database[%s] using Hibernate", sessionFactory
+                    .getProperties().get("hibernate.connection.url")));
+            return session;
+        } catch (Exception ex) {
+            log.error("Exception test: " + ex);
+        }
+
+        return null;
     }
 
 }
