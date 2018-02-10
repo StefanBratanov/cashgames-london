@@ -19,6 +19,8 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import java.net.URL;
 
 import static java.lang.String.format;
+import static java.lang.System.getenv;
+import static jdk.internal.joptsimple.internal.Strings.isNullOrEmpty;
 
 @Slf4j
 public class ServerModule extends AbstractModule {
@@ -56,7 +58,13 @@ public class ServerModule extends AbstractModule {
         server.setHandler(handlers);
 
         final ServerConnector connector = new ServerConnector(server);
-        connector.setPort(Integer.valueOf(port));
+        int portNumber;
+        if (isNullOrEmpty(port)) {
+            portNumber = Integer.valueOf(getenv("PORT"));
+        } else {
+            portNumber = Integer.valueOf(port);
+        }
+        connector.setPort(portNumber);
         connector.setHost(virtualHost);
         server.setConnectors(new Connector[]{connector});
 
