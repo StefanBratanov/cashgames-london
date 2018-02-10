@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import static java.lang.String.format;
+import static java.lang.System.getenv;
 
 @Slf4j
 public class DatabaseModule extends AbstractModule {
@@ -28,7 +29,8 @@ public class DatabaseModule extends AbstractModule {
     @Singleton
     Connection connection(@Named("db.url") String databaseUrl,
                           @Named("db.username") String username,
-                          @Named("db.pass") String password) throws SQLException {
+                          @Named("db.pass") String password,
+                          @Named("db.driver") String driver) throws SQLException {
 
         Properties connectionProps = new Properties();
         connectionProps.put("user", username);
@@ -45,18 +47,19 @@ public class DatabaseModule extends AbstractModule {
     @Provides
     @Singleton
     Session session(@Named("hibernate.config.filename") String configFile) {
-        try {
-            SessionFactory sessionFactory = new Configuration().configure(configFile)
-                    .buildSessionFactory();
-            Session session = sessionFactory.openSession();
-            log.info(format("Successfully connected to database[%s] using Hibernate", sessionFactory
-                    .getProperties().get("hibernate.connection.url")));
-            return session;
-        } catch (Exception ex) {
-            log.error("Exception test: " + ex);
+        Configuration config = new Configuration();
+        //TODO: find better way to find if app runs on Heroku or not
+        if (!configFile.contains("local")) {
+            config.setProperty("hibernate.connection.url", getenv("JDBC_DATABASE_URL"));
+            config.setProperty("hibernate.connection.username", getenv("JDBC_DATABASE_USERNAME"));
+            config.setProperty("hibernate.connection.password", getenv("JDBC_DATABASE_PASSWORD"));
         }
-
-        return null;
+        SessionFactory sessionFactory = config.configure(configFile)
+                .buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        log.info(format("Successfully connected to database[%s] using Hibernate", sessionFactory
+                .getProperties().get("hibernate.connection.url")));
+        return session;
     }
 
 }
