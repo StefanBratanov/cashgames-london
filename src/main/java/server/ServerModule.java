@@ -18,9 +18,9 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import java.net.URL;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.lang.String.format;
 import static java.lang.System.getenv;
-import static jdk.internal.joptsimple.internal.Strings.isNullOrEmpty;
 
 @Slf4j
 public class ServerModule extends AbstractModule {
