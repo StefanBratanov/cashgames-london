@@ -127,6 +127,30 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
+    public void extractDetailsFromHippo4() {
+        String testStatus = "\uD83D\uDCA5£1/£2 NLH DEEPSTACK IS OPEN!!!!\uD83D\uDCA5\n" +
+                "\n" +
+                "CASH GAME UPDATE:\n" +
+                "\n" +
+                "♦️5  x £1/£2 NLH\n" +
+                "♦️1  x £1/£2 NLH DEEPSTACK (£150 min- no max)\n" +
+                "\n" +
+                "#PSLive\n" +
+                "#PokerstarsMegaStackLondon 23rd-25th February";
+
+        PokerVenue pokerVenue = PokerVenue.Hippo;
+
+        PokerGameDetail expectedDetail = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "1/2"), 5, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH Deepstack", "1/2"), 1, updatedAt, twitterUrl);
+
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, testStatus, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail, expectedDetail1);
+        assertThat(actualDetails).hasSize(2);
+    }
+
+    @Test
     public void extractDetailsFromHippo5() {
         String testStatus = "CASH GAME UPDATE:\n" +
                 "\n" +
@@ -152,21 +176,20 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
-    public void extractDetailsFromHippo4() {
-        String testStatus = "\uD83D\uDCA5£1/£2 NLH DEEPSTACK IS OPEN!!!!\uD83D\uDCA5\n" +
+    public void extractDetailsFromHippo6() {
+        String testStatus = "\uD83D\uDCA5Cash Game Update\uD83D\uDCA5\n" +
                 "\n" +
-                "CASH GAME UPDATE:\n" +
+                "\uD83D\uDC492 x £1/£2 Deepstack NLH (£150 min - No max)\n" +
                 "\n" +
-                "♦️5  x £1/£2 NLH\n" +
-                "♦️1  x £1/£2 NLH DEEPSTACK (£150 min- no max)\n" +
+                "\uD83D\uDC496 x £1/£2 NLH\n" +
                 "\n" +
-                "#PSLive\n" +
-                "#PokerstarsMegaStackLondon 23rd-25th February";
+                "♠️We Are Poker♥️\n" +
+                "♦️Any Game, Any Time♣️";
 
         PokerVenue pokerVenue = PokerVenue.Hippo;
 
-        PokerGameDetail expectedDetail = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "1/2"), 5, updatedAt, twitterUrl);
-        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH Deepstack", "1/2"), 1, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "1/2"), 6, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH Deepstack", "1/2"), 2, updatedAt, twitterUrl);
 
 
         List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, testStatus, updatedAt, twitterUrl);

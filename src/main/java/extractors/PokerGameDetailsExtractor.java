@@ -25,7 +25,7 @@ public class PokerGameDetailsExtractor {
 
     private final LimitAndTablesExtractor limitAndTablesExtractor;
 
-    private static final List<String> DS_NLH_GAMES = Arrays.asList("NLHDS", "NLHDEEPSTACK", "NLHDEEP");
+    private static final List<String> DS_NLH_GAMES = Arrays.asList("NLHDS", "NLHDEEPSTACK", "NLHDEEP","DSNLH","DEEPSTACKNLH","DEEPNLH");
 
     private static final Pattern PATTERN_1 = Pattern.compile("(?<game>NLH|PLO)(?<info>(\\d+(-|/)\\d+\\(\\d+\\))+)", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_2 = Pattern.compile("(?<!(,|[^\\d](NLH|PLO)))(?<info>\\d+x\\d+/\\d+)(?<game>ROE|PLO|" + Joiner.on("|").join(DS_NLH_GAMES) + "|NLH)", Pattern.CASE_INSENSITIVE);
