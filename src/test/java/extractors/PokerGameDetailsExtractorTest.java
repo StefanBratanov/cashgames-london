@@ -535,6 +535,28 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
+    public void extractDetailsFromEmpire8() {
+        String statusText = "We don't have a Garden - we have 8\n" +
+                "1 x 1/2 PLO mixed 4/5/6\n" +
+                "7 x 1/2 NLH\n" +
+                "\n" +
+                "#teamempire\n" +
+                "#56suited\n" +
+                "#wpae";
+
+        PokerVenue pokerVenue = PokerVenue.Empire;
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "PLO", "1/2"), 1, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 7, updatedAt, twitterUrl);
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1);
+        assertThat(actualDetails).contains(expectedDetail2);
+        assertThat(actualDetails).hasSize(2);
+    }
+
+    @Test
     public void extractDetailsFromAspers9() {
         String statusText = "Cash Game Update:\n" +
                 "#PLO\n" +

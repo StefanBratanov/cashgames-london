@@ -41,10 +41,13 @@ public class PokerGameDetailsExtractor {
         //very dodgy replacing
         String strippedStatusText = statusText
                 .replaceAll("\\d{1,2}:\\d{2}", "")
+                .replaceAll("([a-w-zy]|\\n)\\s*\\d+\\n","")
                 .replaceAll("4/5/6", "")
                 .replaceAll("(((?<=\\d)(" + lineSep + "|\\s)+(?=\\d+\\s*(x|X)))|((?<=\\d)\\s+(?=(£?\\d+/£?\\d+))))", ",")
                 .replaceAll("(?<=(\\d\\n)|(\\d\\r\\n))\\d+.+(\\w+)", "")
-                .replaceAll("[^!a-zA-Z0-9\\(\\)\\-/,]", "")
+                .replaceAll("[^!a-zA-Z0-9(\\)\\-/,]", "")
+                //plo specific replace
+                .replaceAll("((?i)mixed|(?i)mix)","")
                 .replaceAll("(?i)omaha", "PLO");
 
         List<PokerGameDetail> details = new ArrayList<>();
