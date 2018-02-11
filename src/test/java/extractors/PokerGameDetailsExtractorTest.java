@@ -634,6 +634,31 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
+    public void extractDetailsFromAspers11() {
+        String statusText = "Cash Game Update: \n" +
+                "\n" +
+                "5 x £1/£2\n" +
+                "4 x £1/£1\n" +
+                "\n" +
+                "26 player left in the 888 £440 top prize £43,000\n" +
+                "\n" +
+                "#AspersPoker";
+
+        PokerVenue pokerVenue = PokerVenue.Aspers;
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/1"), 4, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/2"), 5, updatedAt, twitterUrl);
+
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2);
+        assertThat(actualDetails).hasSize(2);
+    }
+
+    @Test
     public void testNotMatchingStatusTextReturnsEmptyList() {
         String statusText = "crap";
         PokerVenue pokerVenue = PokerVenue.Vic;

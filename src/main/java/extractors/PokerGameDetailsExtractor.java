@@ -25,14 +25,15 @@ public class PokerGameDetailsExtractor {
 
     private final LimitAndTablesExtractor limitAndTablesExtractor;
 
-    private static final List<String> DS_NLH_GAMES = Arrays.asList("NLHDS", "NLHDEEPSTACK", "NLHDEEP","DSNLH","DEEPSTACKNLH","DEEPNLH");
+    private static final List<String> DS_NLH_GAMES = Arrays.asList("NLHDS", "NLHDEEPSTACK", "NLHDEEP", "DSNLH", "DEEPSTACKNLH", "DEEPNLH");
 
-    private static final Pattern PATTERN_1 = Pattern.compile("(?<game>NLH|PLO)(?<info>(\\d+(-|/)\\d+\\(\\d+\\))+)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PATTERN_1 = Pattern.compile("(?<game>NLH|PLO)(?<info>(\\d+([-/])\\d+\\(\\d+\\))+)", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_2 = Pattern.compile("(?<!(,|[^\\d](NLH|PLO)))(?<info>\\d+x\\d+/\\d+)(?<game>ROE|PLO|" + Joiner.on("|").join(DS_NLH_GAMES) + "|NLH)", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_3 = Pattern.compile("(?<game>NLH|PLO)(?<info>(\\d+x\\d+/\\d+(,)?)+)", Pattern.CASE_INSENSITIVE);
-    private static final Pattern PATTERN_4 = Pattern.compile("(?<game>NLH|PLO)(?<info>(\\d+/\\d+x\\d+(,)?)+)", Pattern.CASE_INSENSITIVE);
-    private static final Pattern PATTERN_5 = Pattern.compile("(?<!NLH|PLO|\\))(?<info>(\\d+(-|/)\\d+\\(\\d+\\))+)", Pattern.CASE_INSENSITIVE);
-    private static final Pattern PATTERN_6 = Pattern.compile("(?<info>(\\d+,\\d+/\\d+))(.*[game|games|running].*)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PATTERN_4 = Pattern.compile("(?<info>(\\d+x\\d+/\\d+(,)?)+)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PATTERN_5 = Pattern.compile("(?<game>NLH|PLO)(?<info>(\\d+/\\d+x\\d+(,)?)+)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PATTERN_6 = Pattern.compile("(?<!NLH|PLO|\\))(?<info>(\\d+([-/])\\d+\\(\\d+\\))+)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PATTERN_7 = Pattern.compile("(?<info>(\\d+,\\d+/\\d+))(.*[game|games|running].*)", Pattern.CASE_INSENSITIVE);
 
     public List<PokerGameDetail> extract(PokerVenue pokerVenue, String statusText, LocalDateTime updatedAt, String twitterUrl) {
 
@@ -41,21 +42,23 @@ public class PokerGameDetailsExtractor {
         //very dodgy replacing
         String strippedStatusText = statusText
                 .replaceAll("\\d{1,2}:\\d{2}", "")
-                .replaceAll("([a-w-zy]|\\n)\\s*\\d+\\n","")
+                .replaceAll("(?i)(?<=\\n)\\d+\\s*(?![xX])[a-z]", "")
+                .replaceAll("([a-z]|\\n)(?<![xX])\\s*\\d+\\n", "")
                 .replaceAll("4/5/6", "")
-                .replaceAll("(((?<=\\d)(" + lineSep + "|\\s)+(?=\\d+\\s*(x|X)))|((?<=\\d)\\s+(?=(£?\\d+/£?\\d+))))", ",")
+                .replaceAll("(((?<=\\d)(" + lineSep + "|\\s)+(?=\\d+\\s*([xX])))|((?<=\\d)" +
+                        "\\s+(?=(£?\\d+/£?\\d+))))", ",")
                 .replaceAll("(?<=(\\d\\n)|(\\d\\r\\n))\\d+.+(\\w+)", "")
                 .replaceAll("[^!a-zA-Z0-9()\\-/,]", "")
                 //plo specific replace
-                .replaceAll("((?i)mixed|(?i)mix)","")
+                .replaceAll("((?i)mixed|(?i)mix)", "")
                 .replaceAll("(?i)omaha", "PLO")
                 //remove commas between games
-                .replaceAll(",(?=\\d+X)","");
+                .replaceAll(",(?=\\d+X)", "");
 
         List<PokerGameDetail> details = new ArrayList<>();
 
         Optional<Matcher> optionalMatcher = Stream.of(PATTERN_1, PATTERN_2,
-                PATTERN_3, PATTERN_4, PATTERN_5, PATTERN_6)
+                PATTERN_3, PATTERN_4, PATTERN_5, PATTERN_6, PATTERN_7)
                 .filter(pattern -> pattern.asPredicate().test(strippedStatusText))
                 .map(pattern -> pattern.matcher(strippedStatusText))
                 .findFirst();
