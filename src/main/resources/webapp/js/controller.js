@@ -45,5 +45,6 @@ function readableLastUpdated(h, m) {
     if (m % 60 === 0) {
         return output.replace('and ', 'ago');
     }
-    return output.concat(mins + ' mins ago');
+    var minOrMins = mins === 1 ? 'min' : 'mins';
+    return output.concat(mins + ' ' + minOrMins + ' ago');
 }
