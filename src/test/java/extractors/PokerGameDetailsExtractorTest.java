@@ -5,6 +5,7 @@ import model.PokerGameDetail;
 import model.PokerVenue;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -575,6 +576,28 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
+    @Ignore
+    //TODO: try catering for this somehow
+    public void extractDetailsFromEmpire10() {
+        String statusText = "5 £1/£2 games.\n" +
+                "\n" +
+                "1 £1/£2 mixed PLO.\n" +
+                "\n" +
+                "#WPAE";
+
+        PokerVenue pokerVenue = PokerVenue.Empire;
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "PLO", "1/2"), 1, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 5, updatedAt, twitterUrl);
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1);
+        assertThat(actualDetails).contains(expectedDetail2);
+        assertThat(actualDetails).hasSize(2);
+    }
+
+    @Test
     public void extractDetailsFromAspers9() {
         String statusText = "Cash Game Update:\n" +
                 "#PLO\n" +
@@ -656,6 +679,32 @@ public class PokerGameDetailsExtractorTest {
 
         assertThat(actualDetails).contains(expectedDetail1, expectedDetail2);
         assertThat(actualDetails).hasSize(2);
+    }
+
+    @Test
+    public void extractDetailsFromAspers12() {
+        String statusText = "Cash Game Update: \n" +
+                "\n" +
+                "1 x £1/£2 Omaha \n" +
+                "5 x £1/£2\n" +
+                "6 x £1/£1\n" +
+                "\n" +
+                "#AspersPokerCashAction";
+
+        PokerVenue pokerVenue = PokerVenue.Aspers;
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/1"), 6, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/2"), 5, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "PLO", "1/2"), 1, updatedAt, twitterUrl);
+
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2,expectedDetail3);
+        assertThat(actualDetails).hasSize(3);
     }
 
     @Test

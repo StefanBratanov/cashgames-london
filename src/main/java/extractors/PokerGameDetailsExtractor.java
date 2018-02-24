@@ -1,6 +1,7 @@
 package extractors;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,10 +9,10 @@ import model.PokerGame;
 import model.PokerGameDetail;
 import model.PokerVenue;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +45,15 @@ public class PokerGameDetailsExtractor {
                 .replaceAll("\\d{1,2}:\\d{2}", "")
                 .replaceAll("(?i)(?<=\\n)\\d+\\s*(?![xX])[a-z]", "")
                 .replaceAll("([a-z]|\\n)(?<![xX])\\s*\\d+\\n", "")
-                .replaceAll("4/5/6", "")
+                .replaceAll("4/5/6", "");
+
+        if (StringUtils.countMatches(strippedStatusText, "NLH") == 0) {
+            strippedStatusText = strippedStatusText
+                    //when NLH is not mentioned between lines
+                    .replaceAll("(?<=\\d)(?=\\n|$)", "NLH");
+        }
+
+        strippedStatusText = strippedStatusText
                 .replaceAll("(((?<=\\d)(" + lineSep + "|\\s)+(?=\\d+\\s*([xX])))|((?<=\\d)" +
                         "\\s+(?=(£?\\d+/£?\\d+))))", ",")
                 .replaceAll("(?<=(\\d\\n)|(\\d\\r\\n))\\d+.+(\\w+)", "")
@@ -55,13 +64,14 @@ public class PokerGameDetailsExtractor {
                 //remove commas between games
                 .replaceAll(",(?=\\d+X)", "");
 
-        List<PokerGameDetail> details = new ArrayList<>();
-
+        String finalStrippedStatusText = strippedStatusText;
         Optional<Matcher> optionalMatcher = Stream.of(PATTERN_1, PATTERN_2,
                 PATTERN_3, PATTERN_4, PATTERN_5, PATTERN_6, PATTERN_7)
-                .filter(pattern -> pattern.asPredicate().test(strippedStatusText))
-                .map(pattern -> pattern.matcher(strippedStatusText))
+                .filter(pattern -> pattern.asPredicate().test(finalStrippedStatusText))
+                .map(pattern -> pattern.matcher(finalStrippedStatusText))
                 .findFirst();
+
+        List<PokerGameDetail> details = Lists.newArrayList();
 
         if (optionalMatcher.isPresent()) {
             Matcher matcher = optionalMatcher.get();
