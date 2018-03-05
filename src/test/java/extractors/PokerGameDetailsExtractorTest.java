@@ -598,6 +598,73 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
+    public void extractDetailsFromEmpire11() {
+        String statusText = "Still some good action on this chilly Sunday morning.....Come and keep warm with a game or three...\n" +
+                "\n" +
+                "1 x £1/£2 PLO mixed\n" +
+                "2 x £1/£2 NLH\n" +
+                "\n" +
+                "#sunjayspecial\n" +
+                "#wpae\n" +
+                "#teamempire";
+
+        PokerVenue pokerVenue = PokerVenue.Empire;
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "PLO", "1/2"), 1, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 2, updatedAt, twitterUrl);
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1);
+        assertThat(actualDetails).contains(expectedDetail2);
+        assertThat(actualDetails).hasSize(2);
+    }
+
+    @Test
+    public void extractDetailsFromEmpire12() {
+        String statusText = "5X1/2NLH and 1X1/2PLO\n" +
+                "#56suited #wsop2018";
+
+        PokerVenue pokerVenue = PokerVenue.Empire;
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "PLO", "1/2"), 1, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 5, updatedAt, twitterUrl);
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1);
+        assertThat(actualDetails).contains(expectedDetail2);
+        assertThat(actualDetails).hasSize(2);
+    }
+
+    @Test
+    public void extractDetailsFromEmpire13() {
+        String statusText = "Welcome to the weekend!!\n" +
+                "Put down that coffee, we've got something to wake you up!!\n" +
+                "\n" +
+                "1 X £2/£5 NLH...\n" +
+                "1 X £1/£2 Mixed PLO\n" +
+                "2 X £1/£2 NLH...\n" +
+                "\n" +
+                "Or continue drinking your coffee... I'm not going to tell you what to do!\n" +
+                "\n" +
+                "#pokerandcoffee #teamempireonfire #wpae";
+
+        PokerVenue pokerVenue = PokerVenue.Empire;
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "PLO", "1/2"), 1, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "2/5"), 1, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Empire, "NLH", "1/2"), 2, updatedAt, twitterUrl);
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1);
+        assertThat(actualDetails).contains(expectedDetail2);
+        assertThat(actualDetails).contains(expectedDetail3);
+        assertThat(actualDetails).hasSize(3);
+    }
+
+    @Test
     public void extractDetailsFromAspers9() {
         String statusText = "Cash Game Update:\n" +
                 "#PLO\n" +
