@@ -59,7 +59,7 @@ public class PokerGameDetailsExtractor {
                 .replaceAll("(?<=(\\d\\n)|(\\d\\r\\n))\\d+.+(\\w+)", "")
                 .replaceAll("(?<=\\d\\s?)#(?=\\s?\\d\\s?x)", ",")
                 //removing plo, nlh in above line because it is unnecessary
-                .replaceAll("[^\\d]\\s+[a-zA-Z]+\\s*(PLO|NLH)\\n", "")
+                .replaceAll("[^\\d]\\s+[a-zA-Z]+\\h*(?i)(PLO|NLH)\\n", "")
                 .replaceAll("[^!a-zA-Z0-9()\\-/,]", "")
                 //plo specific replace
                 .replaceAll("((?i)mixed|(?i)mix)", "")

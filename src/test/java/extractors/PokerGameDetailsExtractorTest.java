@@ -55,6 +55,39 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
+    public void extractsDetailsFromVic2() {
+        String testStatus = "Cash Games Update\n" +
+                "\n" +
+                "NLH\n" +
+                "1-1 (3)\n" +
+                "1-2 (3)\n" +
+                "1-3 (1)\n" +
+                "2-5 (1)\n" +
+                "\n" +
+                "PLO\n" +
+                "1-2 (1)\n" +
+                "2-5 (1)\n" +
+                "\n" +
+                "http://www.thepokerroom.co.uk  \n" +
+                "#gcpoker";
+
+        PokerVenue pokerVenue = PokerVenue.Vic;
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Vic, "NLH", "1/1"), 3, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Vic, "NLH", "1/2"), 3, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Vic, "NLH", "1/3"), 1, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail4 = new PokerGameDetail(new PokerGame(PokerVenue.Vic, "NLH", "2/5"), 1, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail5 = new PokerGameDetail(new PokerGame(PokerVenue.Vic, "PLO", "1/2"), 1, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail6 = new PokerGameDetail(new PokerGame(PokerVenue.Vic, "PLO", "2/5"), 1, updatedAt, twitterUrl);
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, testStatus, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2, expectedDetail3, expectedDetail4,
+                expectedDetail5, expectedDetail6);
+        assertThat(actualDetails).hasSize(6);
+    }
+
+    @Test
     public void extractDetailsFromHippo1() {
         String testStatus = "Cash Game Update:\n" +
                 "\n" +
@@ -719,7 +752,7 @@ public class PokerGameDetailsExtractorTest {
         List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
         assertThat(actualDetails).contains(expectedDetail1, expectedDetail2,
-                expectedDetail3,expectedDetail4,expectedDetail5);
+                expectedDetail3, expectedDetail4, expectedDetail5);
         assertThat(actualDetails).hasSize(5);
     }
 
@@ -770,7 +803,7 @@ public class PokerGameDetailsExtractorTest {
 
         List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
-        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2,expectedDetail3);
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2, expectedDetail3);
         assertThat(actualDetails).hasSize(3);
     }
 
@@ -793,7 +826,7 @@ public class PokerGameDetailsExtractorTest {
 
         List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
-        assertThat(actualDetails).contains(expectedDetail1,expectedDetail2);
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2);
         assertThat(actualDetails).hasSize(2);
     }
 
@@ -813,7 +846,7 @@ public class PokerGameDetailsExtractorTest {
 
         List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
-        assertThat(actualDetails).contains(expectedDetail1,expectedDetail2,expectedDetail3);
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2, expectedDetail3);
         assertThat(actualDetails).hasSize(3);
     }
 
@@ -833,7 +866,7 @@ public class PokerGameDetailsExtractorTest {
 
         List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
-        assertThat(actualDetails).contains(expectedDetail1,expectedDetail2,expectedDetail3);
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2, expectedDetail3);
         assertThat(actualDetails).hasSize(3);
     }
 
@@ -856,7 +889,7 @@ public class PokerGameDetailsExtractorTest {
 
         List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
 
-        assertThat(actualDetails).contains(expectedDetail1,expectedDetail2,expectedDetail3);
+        assertThat(actualDetails).contains(expectedDetail1, expectedDetail2, expectedDetail3);
         assertThat(actualDetails).hasSize(3);
     }
 
