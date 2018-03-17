@@ -775,6 +775,141 @@ public class PokerGameDetailsExtractorTest {
     }
 
     @Test
+    public void extractDetailsFromAspers13() {
+        String statusText = "Cash Game Update: \n" +
+                "\n" +
+                "1 x £1/£2 Omaha \n" +
+                "3 x £1/£1 \n" +
+                "\n" +
+                "#AspersPokerAction";
+
+        PokerVenue pokerVenue = PokerVenue.Aspers;
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/1"), 3, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "PLO", "1/2"), 1, updatedAt, twitterUrl);
+
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1,expectedDetail2);
+        assertThat(actualDetails).hasSize(2);
+    }
+
+    @Test
+    public void extractDetailsFromAspers14() {
+        String statusText = "Cash Game Update:#1 x £1/£2 Omaha # 2x £1/£2 # 4 x £1/£1";
+
+        PokerVenue pokerVenue = PokerVenue.Aspers;
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/1"), 4, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/2"), 2, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "PLO", "1/2"), 1, updatedAt, twitterUrl);
+
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1,expectedDetail2,expectedDetail3);
+        assertThat(actualDetails).hasSize(3);
+    }
+
+    @Test
+    public void extractDetailsFromAspers15() {
+        String statusText = "Cash Game Update: #NLH 5 x £1/£1# 2x £1/£2 #PLO 1 x £1/£2 #AspersPoker";
+
+        PokerVenue pokerVenue = PokerVenue.Aspers;
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/1"), 5, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/2"), 2, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "PLO", "1/2"), 1, updatedAt, twitterUrl);
+
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1,expectedDetail2,expectedDetail3);
+        assertThat(actualDetails).hasSize(3);
+    }
+
+    @Test
+    public void extractDetailsFromAspers16() {
+        String statusText = "Cash Game Update:\n" +
+                "#NLH £1/1 (5), £1/2 (3).\n" +
+                "#PLO £1/2 (1)\n" +
+                "#AspersPoker";
+
+        PokerVenue pokerVenue = PokerVenue.Aspers;
+
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/1"), 5, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail2 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "NLH", "1/2"), 3, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail3 = new PokerGameDetail(new PokerGame(PokerVenue.Aspers
+                , "PLO", "1/2"), 1, updatedAt, twitterUrl);
+
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, statusText, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail1,expectedDetail2,expectedDetail3);
+        assertThat(actualDetails).hasSize(3);
+    }
+
+    @Test
+    public void extractDetailsFromHippo7() {
+        String testStatus = "Cash Game Update...\n" +
+                "\n" +
+                "♣️1 x £2/£5 NLH\n" +
+                "♣️11 x x £1/£2 NLH \n" +
+                "\n" +
+                "We Are Poker!\n" +
+                "Any Game, Any Time!♣️♦️\n" +
+                "\n" +
+                "#PSLive\n" +
+                "#PokerStarsMegaStack 27th-29th April";
+
+        PokerVenue pokerVenue = PokerVenue.Hippo;
+
+        PokerGameDetail expectedDetail = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "1/2"), 11, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "2/5"), 1, updatedAt, twitterUrl);
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, testStatus, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail, expectedDetail1);
+        assertThat(actualDetails).hasSize(2);
+    }
+
+    @Test
+    public void extractDetailsFromHippo8() {
+        String testStatus = "GAME CHANGER - WHO WANTS TO PLAY ROE WHEN YOU CAN JUST PLAY PLO\n" +
+                "\n" +
+                "♣️2 x £1/£2 NLH\n" +
+                "\n" +
+                "      1 x £1/£2 PLO \n" +
+                "\n" +
+                "♠️❤️We Are Poker!\n" +
+                "Any Game, Any Time!♣️♦️\n" +
+                "\n" +
+                "#PSLive\n" +
+                "#PokerStarsMegaStack 27th-29th April";
+
+        PokerVenue pokerVenue = PokerVenue.Hippo;
+
+        PokerGameDetail expectedDetail = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "NLH", "1/2"), 2, updatedAt, twitterUrl);
+        PokerGameDetail expectedDetail1 = new PokerGameDetail(new PokerGame(PokerVenue.Hippo, "PLO", "1/2"), 1, updatedAt, twitterUrl);
+
+        List<PokerGameDetail> actualDetails = underTest.extract(pokerVenue, testStatus, updatedAt, twitterUrl);
+
+        assertThat(actualDetails).contains(expectedDetail, expectedDetail1);
+        assertThat(actualDetails).hasSize(2);
+    }
+
+    @Test
     public void testNotMatchingStatusTextReturnsEmptyList() {
         String statusText = "crap";
         PokerVenue pokerVenue = PokerVenue.Vic;

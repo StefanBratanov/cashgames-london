@@ -28,8 +28,8 @@ public class PokerGameDetailsExtractor {
 
     private static final List<String> DS_NLH_GAMES = Arrays.asList("NLHDS", "NLHDEEPSTACK", "NLHDEEP", "DSNLH", "DEEPSTACKNLH", "DEEPNLH");
 
-    private static final Pattern PATTERN_1 = Pattern.compile("(?<game>NLH|PLO)(?<info>(\\d+([-/])\\d+\\(\\d+\\))+)", Pattern.CASE_INSENSITIVE);
-    private static final Pattern PATTERN_2 = Pattern.compile("(?<!(,|[^\\d](NLH|PLO)))(?<info>\\d+x\\d+/\\d+)(?<game>ROE|PLO|" + Joiner.on("|").join(DS_NLH_GAMES) + "|NLH)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PATTERN_1 = Pattern.compile("(?<game>NLH|PLO)(?<info>(\\d+([-/])\\d+\\(\\d+\\),?)+)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern PATTERN_2 = Pattern.compile("(?<!(,|[^\\d](NLH|PLO)))(?<info>\\d+x{1,2}\\d+/\\d+)(?<game>ROE|PLO|" + Joiner.on("|").join(DS_NLH_GAMES) + "|NLH)", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_3 = Pattern.compile("(?<game>NLH|PLO)(?<info>(\\d+x\\d+/\\d+(,)?)+)", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_4 = Pattern.compile("(?<info>(\\d+x\\d+/\\d+(,)?)+)", Pattern.CASE_INSENSITIVE);
     private static final Pattern PATTERN_5 = Pattern.compile("(?<game>NLH|PLO)(?<info>(\\d+/\\d+x\\d+(,)?)+)", Pattern.CASE_INSENSITIVE);
@@ -49,20 +49,25 @@ public class PokerGameDetailsExtractor {
 
         if (StringUtils.countMatches(strippedStatusText, "NLH") == 0) {
             strippedStatusText = strippedStatusText
-                    //when NLH is not mentioned between lines
-                    .replaceAll("(?<=\\d)(?=\\n|$)", "NLH");
+                    //when NLH is not mentioned between lines or between hashtags
+                    .replaceAll("(?<=\\d)(?=\\s*\\n|$|\\s*#)", "NLH");
         }
 
         strippedStatusText = strippedStatusText
                 .replaceAll("(((?<=\\d)(" + lineSep + "|\\s)+(?=\\d+\\s*([xX])))|((?<=\\d)" +
                         "\\s+(?=(£?\\d+/£?\\d+))))", ",")
                 .replaceAll("(?<=(\\d\\n)|(\\d\\r\\n))\\d+.+(\\w+)", "")
+                .replaceAll("(?<=\\d\\s?)#(?=\\s?\\d\\s?x)", ",")
+                //removing plo, nlh in above line because it is unnecessary
+                .replaceAll("[^\\d]\\s+[a-zA-Z]+\\s*(PLO|NLH)\\n", "")
                 .replaceAll("[^!a-zA-Z0-9()\\-/,]", "")
                 //plo specific replace
                 .replaceAll("((?i)mixed|(?i)mix)", "")
                 .replaceAll("(?i)omaha", "PLO")
                 //remove commas between games
-                .replaceAll(",(?=\\d+X)", "");
+                .replaceAll(",(?=\\d+X)", "")
+                //remove double xx
+                .replaceAll("xx", "x");
 
         String finalStrippedStatusText = strippedStatusText;
         Optional<Matcher> optionalMatcher = Stream.of(PATTERN_1, PATTERN_2,
