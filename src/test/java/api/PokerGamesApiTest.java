@@ -82,6 +82,7 @@ public class PokerGamesApiTest {
         updatedVenueDetail3.setLatestUpdateTime(latestUpdateTime);
         updatedVenueDetail4.setPokerGameDetails(Collections.emptyList());
 
+
         assertThat(pokerVenueDetails).hasSize(4);
         assertThat(pokerVenueDetails).containsExactly(updatedVenueDetail3,updatedVenueDetail2,
                 updatedVenueDetail4,updatedVenueDetail1);
